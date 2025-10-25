@@ -1,4 +1,4 @@
-package project;
+package driveinfo;
 
 public class StationDTO {
 	private int stationId;

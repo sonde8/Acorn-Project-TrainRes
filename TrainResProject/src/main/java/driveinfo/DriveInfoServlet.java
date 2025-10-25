@@ -1,14 +1,16 @@
-package project;
+package driveinfo;
 
 import java.io.IOException;
 import java.util.List; // ArrayList 대신 List 인터페이스 사용
-import project.DriveInfoResultDTO; 
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
+
+import driveinfo.DriveInfoResultDTO;
 
 @WebServlet("/DriveInfoList")
 public class DriveInfoServlet extends HttpServlet{
