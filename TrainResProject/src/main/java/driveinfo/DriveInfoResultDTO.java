@@ -1,4 +1,4 @@
-package project;
+package driveinfo;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;

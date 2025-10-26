@@ -1,4 +1,4 @@
-package project;
+package driveinfo;
 
 import java.sql.Date;
 import java.sql.Timestamp;

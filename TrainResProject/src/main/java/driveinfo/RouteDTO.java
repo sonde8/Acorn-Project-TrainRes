@@ -1,4 +1,4 @@
-package project;
+package driveinfo;
 
 public class RouteDTO {
 	private int routeId;
