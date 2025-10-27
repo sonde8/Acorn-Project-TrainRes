@@ -285,7 +285,8 @@
         		// 로그인 상태: 사용자 이름과 로그아웃 링크 표시
 			%>
                 <span style="font-weight: bold; color: #333;"><%= user.getName() %>님, 환영합니다!</span>
-                <a href="logout">로그아웃</a> <%-- 💡 로그아웃 서블릿으로 연결 --%>
+                <a href="logout">로그아웃</a> <%-- 로그아웃 서블릿으로 연결 --%>
+                <a href="#">마이페이지</a> <%-- 마이페이지 @websevlet 값 넣으시면 돼욧 --%>
 			<%
     			} else {
         		// 로그아웃 상태: 로그인 및 회원가입 링크 표시
