@@ -30,7 +30,7 @@ public class CustomerMyPageServlet extends HttpServlet {
         Customer cust = (Customer) (session != null ? session.getAttribute("cust") : null);
 
         if (cust == null) {
-            resp.sendRedirect(req.getContextPath() + "/customer/login");
+            resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
 

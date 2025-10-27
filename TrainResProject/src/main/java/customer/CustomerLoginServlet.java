@@ -5,7 +5,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-@WebServlet("/customer/login")
+@WebServlet("/login")
 public class CustomerLoginServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
@@ -33,7 +33,7 @@ public class CustomerLoginServlet extends HttpServlet {
 	    if (user != null) {
 	        HttpSession session = req.getSession();
 	        session.setAttribute("cust", user); 
-	        resp.sendRedirect(req.getContextPath() + "/mypage");
+	        resp.sendRedirect(req.getContextPath() + "/DriveInfoList");
 	    } else {
 	        req.setAttribute("error", "아이디 또는 비밀번호가 틀렸습니다");
 	        req.getRequestDispatcher("/WEB-INF/views/customer/login.jsp").forward(req, resp);

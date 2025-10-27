@@ -23,7 +23,7 @@ public class CustomerEditServlet extends HttpServlet {
 
         // 로그인 안 된 경우 로그인 페이지로 리다이렉트
         if (cust == null) {
-            resp.sendRedirect(req.getContextPath() + "/customer/login");
+            resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
 
