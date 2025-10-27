@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.google.gson.Gson;
 
 import driveinfo.DriveInfoResultDTO;
@@ -42,7 +43,7 @@ public class DriveInfoServlet extends HttpServlet{
         // 2. 분기점: 파라미터 유무 확인ㅌ4
         if (deptStation == null || arriStation == null || deptStation.trim().isEmpty() || arriStation.trim().isEmpty()) {
             // A) 파라미터가 없는 경우 (최초 접근): 검색 폼 (페이지 1)으로 이동
-            req.getRequestDispatcher("/WEB-INF/views/SearchForm.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/driveinfo/SearchForm.jsp").forward(req, resp);
             return; 
         }
         
@@ -62,7 +63,7 @@ public class DriveInfoServlet extends HttpServlet{
         req.setAttribute("list", list);
         req.setAttribute("pageSize", PAGE_SIZE);
         
-        req.getRequestDispatcher("/WEB-INF/views/DriveInfo.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/driveinfo/DriveInfo.jsp").forward(req, resp);
     }
 	
 	// 더 보기 Ajax 요청 처리
@@ -72,6 +73,7 @@ public class DriveInfoServlet extends HttpServlet{
 		String startTimeFilter = req.getParameter("startTime");
 		
 		// 현재 로드된 개수 (다음 데이터의 시작 위치)를 파라미터로 받음
+		
 		int offset = Integer.parseInt(req.getParameter("offset"));
 		
 		DriveInfoService service = new DriveInfoService();

@@ -1,70 +1,302 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="customer.UserDTO" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>운행 정보 조회</title>
+
+<link rel="stylesheet" as="style" crossorigin 
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+      
 <style>
-.train-row {
-	border : 1px solid #ccc;
-	margin-bottom : 10px;
-	padding : 15px;
-	display : flex;
-	cursor : pointer;
-	transition: background-color 0.1s ease;
-}
+	
+	* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-/* 마우스 오버 시 스타일 */
-.train-row:hover {
-    background-color: #f7f7f7;
-}
-/* 선택된 행 스타일 */
-.train-row.selected {
-    background-color: #e6f7ff; /* 연한 파랑색 배경 */
-    border: 2px solid #007bff; /* 파란색 테두리 */
-    padding: 14px; /* 테두리 두께로 인한 패딩 조정 */
-}
+    body {
+        font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
+        background-color: #f5f5f5;
+    }	
 
-/* 하단 고정 푸터 스타일 */
-.fixed-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #e6f7ff; /* 어두운 배경 */
-    color: white;
-    padding: 15px 0;
-    text-align: center;
-    /* box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2); */
-    display: none; /* 초기에는 숨김 */
-    z-index: 100;
-}
-.footer-buttons button {
-    padding: 10px 20px;
-    margin: 0 10px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-}
-.footer-buttons #selectSeatBtn {
-    background-color: #007bff; /* 좌석선택 버튼 색상 */
-    color: white;
-}
-.footer-buttons #reserveBtn {
-    background-color: #28a745; /* 예매 버튼 색상 */
-    color: white;
-}
-/* 기타 스타일 */
-.col-train-info, .col-route-time, .col-price {
-    /* 기존 스타일 유지 */
-}
+	a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+	/* 상단 네비게이션 */
+    .top-nav {
+        background-color: #f8f8f8;
+        border-bottom: 1px solid #ddd;
+        padding: 0.5rem 0;
+    }
+
+    .top-nav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 2%;
+    }
+
+    .top-nav-left {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .top-nav-right {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .nav-button {
+        padding: 0.5rem 1rem;
+        background-color: white;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    /* 헤더 */
+    .header {
+        background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+        color: white;
+        padding: 1rem 0;
+        
+    }
+
+    .header-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 2%;
+    }
+
+    .logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .logo img {
+        height: 2.5rem;
+    }
+
+    .main-menu {
+        display: flex;
+        list-style: none;
+        gap: 2rem;
+    }
+
+    .main-menu li {
+        padding: 0.5rem 1rem;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        border-bottom: 3px solid transparent;
+    }
+
+    .main-menu li:hover {
+        border-bottom-color: white;
+    }
+
+    .menu-icon {
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+    
+    h1 {
+    	margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
+    }
+
+	h2 {
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	/* 열차 조회 리스트 */
+	.train-row {
+		border : 1px solid #ccc;
+		margin-bottom : 10px;
+		padding : 15px;
+		display : flex;
+		cursor : pointer;
+		transition: background-color 0.1s ease;
+	}
+	
+	/* 더 보기 버튼 */
+	.moreBtn {
+		border : 1px solid #ccc;
+		background-color : white;
+		border-radius : 1rem;
+		width : 8rem;
+		font-size : 1rem;
+		font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
+	}
+	
+	
+	/* 마우스 오버 시 스타일 */
+	.train-row:hover {
+	    background-color: #f7f7f7;
+	}
+	/* 선택된 행 스타일 */
+	.train-row.selected {
+	    background-color: #e6f7ff; /* 연한 파랑색 배경 */
+	    border: 2px solid #007bff; /* 파란색 테두리 */
+	    padding: 14px; /* 테두리 두께로 인한 패딩 조정 */
+	}
+	
+	/* 하단 고정 푸터 스타일 */
+	.fixed-footer {
+	    position: fixed;
+	    bottom: 0;
+	    left: 0;
+	    width: 100%;
+	    background-color: #e6f7ff; /* 어두운 배경 */
+	    color: white;
+	    padding: 15px 0;
+	    text-align: center;
+	    /* box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2); */
+	    display: none; /* 초기에는 숨김 */
+	    z-index: 100;
+	}
+	.footer-buttons button {
+	    padding: 10px 20px;
+	    margin: 0 10px;
+	    font-size: 16px;
+	    cursor: pointer;
+	    border: none;
+	    border-radius: 5px;
+	}
+	.footer-buttons #selectSeatBtn {
+	    background-color: #007bff; /* 좌석선택 버튼 색상 */
+	    color: white;
+	}
+	.footer-buttons #reserveBtn {
+	    background-color: #28a745; /* 예매 버튼 색상 */
+	    color: white;
+	}
+	
+	/* 푸터 */
+    .footer {
+        background-color: #2c3e50;
+        color: white;
+        padding: 2rem 0;
+        margin-top: 3rem;
+    }
+
+    .footer-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2%;
+    }
+
+    .footer-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .footer-links a {
+        color: white;
+        font-weight: bold;
+        transition: color 0.3s;
+    }
+
+    .footer-info {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: #bdc3c7;
+    }
+
+    /* 반응형 디자인 */
+    @media (max-width: 1200px) {
+        .content-wrapper {
+            flex-direction: column;
+            padding: 2rem;
+        }
+
+        .banner-section {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .search-section {
+            width: 100%;
+            max-width: 500px;
+            margin-top: 2rem;
+        }
 
 </style>
 </head>
 <body>
+
+	<% UserDTO user = (UserDTO) session.getAttribute("cust"); %>
+
+	<!-- 상단 네비게이션 -->
+    <div class="top-nav">
+        <div class="top-nav-container">
+            <div class="top-nav-left">
+                <button class="nav-button">한국철도</button>
+                <button class="nav-button">승차권예매</button>
+                <button class="nav-button">기차여행</button>
+            </div>
+            <div class="top-nav-right">
+                 <%
+    			if (user != null) {
+        		// 로그인 상태: 사용자 이름과 로그아웃 링크 표시
+			%>
+                <span style="font-weight: bold; color: #333;"><%= user.getName() %>님, 환영합니다!</span>
+                <a href="logout">로그아웃</a> <%-- 💡 로그아웃 서블릿으로 연결 --%>
+			<%
+    			} else {
+        		// 로그아웃 상태: 로그인 및 회원가입 링크 표시
+			%>
+                <a href="login">로그인</a>
+                <a href="join">회원가입</a>
+			<%
+    			}
+			%>
+                <a href="#">고객센터</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 헤더 -->
+    <div class="header">
+        <div class="header-container">
+            <div class="logo">
+            	<img src="${pageContext.request.contextPath}/images/logo2.png" 
+         				alt="KTX 로고" style="height: 80px;">
+            </div>
+            <ul class="main-menu">
+                <li>승차권</li>
+                <li>철도역·열차</li>
+                <li>고객서비스</li>
+                <li>코레일멤버십</li>
+            </ul>
+            <div class="menu-icon">☰</div>
+        </div>
+    </div>
+
+	<h1 style="text-align: center;">승차권 예매</h1>
+
     <h2 style="text-align: center;">${dept} → ${arri} 운행 정보</h2>
     
     <div class="train-list-container">
@@ -74,12 +306,11 @@
             	data-drive-id="<c:out value='${drive.driveId}'/>"
             	onclick="handleRowClick(this)"
             >
-                
                 <div class="col-train-info" style="width: 15%; text-align: center;">
-                    <img src="images/<c:out value='${drive.trainType}'/>_logo.png" 
-                         alt="${drive.trainType} 로고" style="height: 20px;">
-                    <p style="font-weight: bold;">${drive.trainNo}</p>
-                </div>
+    				<img src="${pageContext.request.contextPath}/images/ktx.png" 
+         				alt="KTX 로고" style="height: 20px;">
+    				<p style="font-weight: bold;">${drive.trainNo}</p>
+				</div>
 
                 <div class="col-route-time" style="width: 50%;">
                     <span style="font-size: 1.1em; font-weight: bold;">
@@ -106,8 +337,8 @@
     </div>
 
     <div style="text-align: center; margin-top: 20px;">
-        <button id="moreBtn" onclick="loadMore()" 
-            style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
+        <button id="moreBtn" class="moreBtn" onclick="loadMore()" 
+            style="padding: 10px 20px; cursor: pointer;">
             더 보기
         </button>
     </div>
@@ -118,6 +349,24 @@
     		<button id="selectSeatBtn" onclick="selectSeat()">좌석 선택</button>
     		<button id="reserveBtn" onclick="reserve()">예매</button>
     	</div>
+    </div>
+    
+     <!-- 푸터 -->
+    <div class="footer">
+        <div class="footer-container">
+            <ul class="footer-links">
+                <li><a href="#">이용약관</a></li>
+                <li><a href="#">개인정보처리방침</a></li>
+                <li><a href="#">여객운송약관</a></li>
+                <li><a href="#">고객센터</a></li>
+            </ul>
+            <div class="footer-info">
+                <p><strong>상호:</strong> 에이콘철도공사 | <strong>사업자등록:</strong> 314-82-10024 | <strong>통신판매업신고:</strong> 서울 마포구-0433호</p>
+                <p><strong>주소:</strong> 04038 서울 마포구 양화로 122 4층</p>
+                <p><strong>대표전화:</strong> 02-2231-6412</p>
+                <p style="margin-top: 1rem; font-size: 0.8rem;">Copyright © Acorn Railroad Corporation. All rights reserved.</p>
+            </div>
+        </div>
     </div>
     
     
@@ -281,7 +530,10 @@
     // 좌석선택 버튼 클릭 시 동작 (예시)
     function selectSeat() {
     	if (selectedDriveId) {
-    		alert(selectedDriveId + '번 열차의 좌석을 선택합니다.');
+    		// SeatSelectionServlet으로 요청을 보내고 선택된 ID를 파라미터로 전달
+            // 서블릿 매핑 URL에 맞게 ? 앞에 수정해야됨
+            window.location.href = 'SeatSelection?driveId=' + selectedDriveId;
+    		// alert(selectedDriveId + '번 열차의 좌석을 선택합니다.');
     	} else {
     		alert('열차를 선택해주세요.');
     	}

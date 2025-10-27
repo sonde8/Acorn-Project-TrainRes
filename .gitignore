@@ -10,8 +10,8 @@ Servers/
 # ===============================
 */.settings/
 # .classpath와 .project는 필요하면 포함
-# */.classpath
-# */.project
+*/.classpath
+*/.project
 
 # ===============================
 # 프로젝트 빌드 산출물 제외

@@ -19,7 +19,7 @@ public class JoinController extends HttpServlet{
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.getRequestDispatcher("/WEB-INF/views/join.jsp").forward(req, resp);
+		req.getRequestDispatcher("/WEB-INF/views/customer/join.jsp").forward(req, resp);
 	}
 	
 	
@@ -46,7 +46,7 @@ public class JoinController extends HttpServlet{
             birthDate = Date.valueOf(localDate);
 		} catch (IllegalArgumentException e) {
 			req.setAttribute("error", "생년월일 형식이 올바르지 않습니다.");
-			req.getRequestDispatcher("/WEB-INF/views/join.jsp").forward(req, resp);
+			req.getRequestDispatcher("/WEB-INF/views/customer/join.jsp").forward(req, resp);
 			return;
 		}
 		
@@ -59,7 +59,7 @@ public class JoinController extends HttpServlet{
 			resp.sendRedirect("login?msg=joined");
 		} else {
 			req.setAttribute("error", "회원가입에 실패했습니다. (ID 중복 등)");
-			req.getRequestDispatcher("/WEB-INF/views/join.jsp").forward(req, resp);
+			req.getRequestDispatcher("/WEB-INF/views/customer/join.jsp").forward(req, resp);
 		}
 	}
 

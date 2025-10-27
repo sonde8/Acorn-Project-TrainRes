@@ -11,10 +11,7 @@
 </head>
 <body>
 
-
-
 <%   
-
  UserDTO user = (UserDTO) session.getAttribute("cust");
 	%>
 
@@ -28,9 +25,6 @@
 <a href="logout">로그아웃</a>
 
 <%} %>
-
-
-
 
  코레일 메인
 

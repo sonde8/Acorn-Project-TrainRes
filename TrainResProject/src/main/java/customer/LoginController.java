@@ -15,20 +15,12 @@ import customer.UserDTO;
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 	
- 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
-
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
+		req.getRequestDispatcher("/WEB-INF/views/customer/login.jsp").forward(req, resp);
 	}
-	
-	
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -36,9 +28,6 @@ public class LoginController extends HttpServlet {
 	
 		String id = req.getParameter("id");
 		String pw = req.getParameter("pw");
-		
-		
-		
 		
 		System.out.println(id);
 		System.out.println(pw);
@@ -51,11 +40,11 @@ public class LoginController extends HttpServlet {
 			//로그인 정보를 세션에 저장하기
 		    HttpSession session = req.getSession();
 		    session.setAttribute("cust", user); 
-		    resp.sendRedirect("home");
+		    resp.sendRedirect("DriveInfoList");
 		} else {
 			// 로그인 실패 시 다시 로그인 페이지로 보냄
 			req.setAttribute("error","아이디 또는 비밀번호가 틀렸습니다");
-			req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
+			req.getRequestDispatcher("/WEB-INF/views/customer/login.jsp").forward(req, resp);
 			
 		}
 

@@ -22,8 +22,6 @@ public class UserDTO {
 	}
 	
 	
-	
-	
 	//아래는 getter/setter 임
 	public String getCustId() { return custId; }
 	public String getName() { return name; }
@@ -35,7 +33,6 @@ public class UserDTO {
 	public void setBirth(Date birth) { this.birth = birth; }
 	public void setPassword(String password) { this.password = password; }
 
-	
 
 
 }
