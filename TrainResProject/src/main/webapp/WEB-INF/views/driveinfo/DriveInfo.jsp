@@ -283,10 +283,12 @@
     <!-- 헤더 -->
     <div class="header">
         <div class="header-container">
-            <div class="logo">
-            	<img src="${pageContext.request.contextPath}/images/logo2.png" 
-         				alt="KTX 로고" style="height: 80px;">
-            </div>
+            <a href="DriveInfoList" class="logo-link">
+        		<div class="logo">
+            		<img src="${pageContext.request.contextPath}/images/logo2.png" 
+         			alt="KTX 로고" style="height: 80px;">
+            	</div>
+        	</a>
             <ul class="main-menu">
                 <li>승차권</li>
                 <li>철도역·열차</li>
