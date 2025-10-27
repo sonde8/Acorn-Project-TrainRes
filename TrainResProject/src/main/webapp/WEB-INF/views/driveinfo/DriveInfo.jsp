@@ -516,6 +516,12 @@
         row.className = 'train-row';
         // 데이터 속성 및 클릭 이벤트를 추가 (운행편 클릭)
         row.setAttribute('data-drive-id', drive.driveId);
+        row.setAttribute('data-price', drive.price); 
+        row.setAttribute('data-train-no', drive.trainNo); 
+        row.setAttribute('data-dept-station', drive.deptStation); 
+        row.setAttribute('data-arri-station', drive.arriStation); 
+        row.setAttribute('data-formatted-dept-time', drive.formattedDeptTime); 
+        row.setAttribute('data-formatted-arri-time', drive.formattedArriTime); 
         row.setAttribute('onclick' , 'handleRowClick(this)');
         row.style = "border: 1px solid #ccc; margin-bottom: 10px; padding: 15px; display: flex;";
 
