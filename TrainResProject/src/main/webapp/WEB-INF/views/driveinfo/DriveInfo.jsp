@@ -1,7 +1,8 @@
+<%@page import="customer.Customer"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page import="customer.UserDTO" %>
+<%@ page import="customer.Customer" %>
 
 <!DOCTYPE html>
 <html>
@@ -247,7 +248,7 @@
 </head>
 <body>
 
-	<% UserDTO user = (UserDTO) session.getAttribute("cust"); %>
+	<% Customer user = (Customer) session.getAttribute("cust"); %>
 
 	<!-- 상단 네비게이션 -->
     <div class="top-nav">
@@ -264,7 +265,7 @@
 			%>
                 <span style="font-weight: bold; color: #333;"><%= user.getName() %>님, 환영합니다!</span>
                 <a href="logout">로그아웃</a> <%-- 로그아웃 서블릿으로 연결 --%>
-                <a href="#">마이페이지</a> <%-- 마이페이지 @websevlet 값 넣으시면 돼욧 --%>
+                <a href="${pageContext.request.contextPath}/mypage">마이페이지</a> <%-- 마이페이지 @websevlet 값 넣으시면 돼욧 --%>
 			<%
     			} else {
         		// 로그아웃 상태: 로그인 및 회원가입 링크 표시

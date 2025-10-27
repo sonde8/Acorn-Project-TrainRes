@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import customer.UserDAO;
-import customer.UserDTO;
+import customer.CustomerDAO;
+import customer.Customer;
 
-@WebServlet("/join")
-public class JoinController extends HttpServlet{
+@WebServlet("/customer/join")
+public class CustomerJoinServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
 	@Override
@@ -50,8 +50,8 @@ public class JoinController extends HttpServlet{
 			return;
 		}
 		
-		UserDAO dao = new UserDAO();
-		UserDTO newUser =new UserDTO(custId, name, birthDate, password);
+		CustomerDAO dao = new CustomerDAO();
+		Customer newUser =new Customer(custId, name, birthDate, password);
 		
 		int result =dao.join(newUser);
 		

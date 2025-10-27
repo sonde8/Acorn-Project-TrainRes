@@ -9,7 +9,7 @@
 <body>
 	<h2>🚆 코레일 로그인 🚆</h2>
 	
-	<form action="login" method="post">
+	<form action="${pageContext.request.contextPath}/login" method="post">
 		<label>ID: <input type="text" name="id" required></label><br>
 		<label>PW: <input type="password" name="pw" required></label><br>
 		<button type="submit">로그인</button>

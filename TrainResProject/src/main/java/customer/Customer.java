@@ -2,7 +2,7 @@ package customer;
 
 import java.sql.Date;
 
-public class UserDTO {
+public class Customer {
 	
 	private String custId;
 	private String name;
@@ -10,11 +10,11 @@ public class UserDTO {
 	private String password;
 
 	
-	public UserDTO() {
+	public Customer() {
 		
 	}
 	
-	public UserDTO(String custId, String name, Date birth, String password) {
+	public Customer(String custId, String name, Date birth, String password) {
 		this.custId = custId;
 		this.name = name;
 		this.birth =birth;
