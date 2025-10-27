@@ -440,11 +440,12 @@
     	        formattedDeptTime: clickedElement.getAttribute('data-formatted-dept-time'),
     	        formattedArriTime: clickedElement.getAttribute('data-formatted-arri-time')	
     		};
-    		}
+    }
+    	
     	console.log("선택된 운행 정보 객체:", selectedDriveInfo);
-    	}
     	console.log("선택된 운행 아이디:", selectedDriveId);
     }
+    
     
     // 모든 train-rwo에 handleRowClick 이벤트를 연결
     function applyClickEvents() {
@@ -564,7 +565,7 @@
     		return;
     	}
     	
-    	const form = document.createrElement('form');
+    	const form = document.createElement('form');
     	form.method = 'POST';
     	// 좌석선택 서블릿의 url을 입력하기
     	form.action = 'SetSelectedTicket';
