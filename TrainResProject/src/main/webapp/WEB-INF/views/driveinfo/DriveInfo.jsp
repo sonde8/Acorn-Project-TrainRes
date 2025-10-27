@@ -260,22 +260,27 @@
                 <button class="nav-button">기차여행</button>
             </div>
             <div class="top-nav-right">
-			    <%
-			    if (user != null) {
-			    %>
-			        <span style="font-weight: bold; color: #333;"><%= user.getName() %>님, 환영합니다!</span>
-			        <a href="<%= request.getContextPath() %>/mypage">마이페이지</a>
-			        <a href="<%= request.getContextPath() %>/logout">로그아웃</a>
-			    <%
-			    } else {
-			    %>
-			        <a href="<%= request.getContextPath() %>/customer/login">로그인</a>
-			        <a href="<%= request.getContextPath() %>/customer/join">회원가입</a>
-			    <%
-			    }
-			    %>
-			    <a href="#">고객센터</a>
-			</div>
+
+
+
+                <%
+    			if (user != null) {
+        		// 로그인 상태: 사용자 이름과 로그아웃 링크 표시
+			%>
+                <span style="font-weight: bold; color: #333;"><%= user.getName() %>님, 환영합니다!</span>
+                <a href="logout">로그아웃</a> <%-- 💡 로그아웃 서블릿으로 연결 --%>
+			<%
+    			} else {
+        		// 로그아웃 상태: 로그인 및 회원가입 링크 표시
+			%>
+                <a href="login">로그인</a>
+                <a href="join">회원가입</a>
+			<%
+    			}
+			%>
+                <a href="#">고객센터</a>
+            </div>
+        </div>
 
     </div>
 
@@ -305,6 +310,12 @@
         <c:forEach var="drive" items="${list}">
             <div class="train-row" style="border: 1px solid #ccc; margin-bottom: 10px; padding: 15px; display: flex;"
             	data-drive-id="<c:out value='${drive.driveId}'/>"
+            	data-price="<c:out value='${drive.price}'/>"
+		        data-train-no="<c:out value='${drive.trainNo}'/>"
+		        data-dept-station="<c:out value='${drive.deptStation}'/>"
+		        data-arri-station="<c:out value='${drive.arriStation}'/>"
+		        data-formatted-dept-time="<c:out value='${drive.formattedDeptTime}'/>"
+		        data-formatted-arri-time="<c:out value='${drive.formattedArriTime}'/>"
             	onclick="handleRowClick(this)"
             >
                 <div class="col-train-info" style="width: 15%; text-align: center;">
@@ -376,6 +387,9 @@
     let currentOffset = ${list.size()};
     const pageSize = ${pageSize}; // 서블릿에서 설정한 10개
     
+    //
+	const contextPath = '${pageContext.request.contextPath}';
+    
     
     // 현재 선택된 운행정보의 ID를 저장하는 변수 (운행편 클릭 이벤트)
     let selectedDriveId = null;
@@ -397,6 +411,10 @@
     });
     
     // 클릭 이벤트 핸들러 행을 선택/선택 해제하고 스타일을 변경 (운행편 클릭 이벤트)
+    
+    // 선택된 열차의 모든 정보를 저장할 객체 변수 선언
+    let selectedDriveInfo = null;
+    
     function handleRowClick(clickedElement) {
     	const driveId = Number(clickedElement.getAttribute('data-drive-id'));
     	
@@ -410,15 +428,30 @@
     	if (selectedDriveId === driveId) {
     		// 이미 선택된 행을 다시 클릭하게 되면 선택 해제
     		selectedDriveId = null;
+    		selectedDriveInfo = null;	// 정보 객체 초기화
     		if(fixedFooter) fixedFooter.style.display = 'none'; // 푸터를 숨김
     	} else {
     		// 새로운 행을 클릭하면 선택이 됨
     		selectedDriveId = driveId;
     		clickedElement.classList.add('selected'); // 새 행에 스타일 추가
     		if(fixedFooter) fixedFooter.style.display = 'block'; // 푸터가 표시됨
-    	}
+    		
+    		// 선택된 열차의 모든 데이터 수집 및 저장
+    		selectedDriveInfo = {
+    			driveId: driveId,
+    	        price: Number(clickedElement.getAttribute('data-price')),
+    	        trainNo: clickedElement.getAttribute('data-train-no'),
+    	        deptStation: clickedElement.getAttribute('data-dept-station'),
+    	        arriStation: clickedElement.getAttribute('data-arri-station'),
+    	        formattedDeptTime: clickedElement.getAttribute('data-formatted-dept-time'),
+    	        formattedArriTime: clickedElement.getAttribute('data-formatted-arri-time')	
+    		};
+    }
+    	
+    	console.log("선택된 운행 정보 객체:", selectedDriveInfo);
     	console.log("선택된 운행 아이디:", selectedDriveId);
     }
+    
     
     // 모든 train-rwo에 handleRowClick 이벤트를 연결
     function applyClickEvents() {
@@ -489,6 +522,12 @@
         row.className = 'train-row';
         // 데이터 속성 및 클릭 이벤트를 추가 (운행편 클릭)
         row.setAttribute('data-drive-id', drive.driveId);
+        row.setAttribute('data-price', drive.price); 
+        row.setAttribute('data-train-no', drive.trainNo); 
+        row.setAttribute('data-dept-station', drive.deptStation); 
+        row.setAttribute('data-arri-station', drive.arriStation); 
+        row.setAttribute('data-formatted-dept-time', drive.formattedDeptTime); 
+        row.setAttribute('data-formatted-arri-time', drive.formattedArriTime); 
         row.setAttribute('onclick' , 'handleRowClick(this)');
         row.style = "border: 1px solid #ccc; margin-bottom: 10px; padding: 15px; display: flex;";
 
@@ -502,9 +541,12 @@
         };
         
         // 템플릿 리터럴 내 EL 충돌 방지 (\${...} 사용)
+        
+        const imageFileName = 'ktx.png';
+        
         row.innerHTML = `
             <div class="col-train-info" style="width: 15%; text-align: center;">
-                <img src="images/\${drive.trainType}_logo.png" 
+                <img src="\${contextPath}/images/\${imageFileName}" 
                      alt="\${drive.trainType} 로고" style="height: 20px;">
                 <p style="font-weight: bold;">\${drive.trainNo}</p>
             </div>
@@ -530,14 +572,27 @@
     
     // 좌석선택 버튼 클릭 시 동작 (예시)
     function selectSeat() {
-    	if (selectedDriveId) {
-    		// SeatSelectionServlet으로 요청을 보내고 선택된 ID를 파라미터로 전달
-            // 서블릿 매핑 URL에 맞게 ? 앞에 수정해야됨
-            window.location.href = 'SeatSelection?driveId=' + selectedDriveId;
-    		// alert(selectedDriveId + '번 열차의 좌석을 선택합니다.');
-    	} else {
+    	if (!selectedDriveInfo) {
     		alert('열차를 선택해주세요.');
+    		return;
     	}
+    	
+    	const form = document.createElement('form');
+    	form.method = 'POST';
+    	// 좌석선택 서블릿의 url을 입력하기
+    	form.action = 'SetSelectedTicket';
+    	
+    	// 수집된 selectedDriveInfo 객체의 모든 속성을 hidden input으로 추가
+        for (const key in selectedDriveInfo) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key; // 서블릿에서 req.getParameter(key)로 받을 이름
+            input.value = selectedDriveInfo[key];
+            form.appendChild(input);
+        }
+        
+        document.body.appendChild(form);
+        form.submit(); // 서블릿으로 데이터 전송 시작
     }
     
     // 예매 버튼 클릭 시 동작 (예시)
