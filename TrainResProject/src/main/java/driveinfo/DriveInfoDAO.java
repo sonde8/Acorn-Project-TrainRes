@@ -10,9 +10,9 @@ import java.math.BigDecimal;
 
 public class DriveInfoDAO {
 	private final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-	private final String URL = "jdbc:oracle:thin:@localhost:1521:TESTDB"; // ✅ TESTDB로 변경
-	private final String USER = "scott";
-	private final String PASSWORD = "tiger";
+    private final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
+    private final String USER = "system";
+    private final String PASSWORD = "1234";
 
 
     // DB에 연결 후 Connection 객체 반환

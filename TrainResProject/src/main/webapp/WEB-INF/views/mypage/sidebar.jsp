@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <div class="sidebar">
-  <h2>🚄 마이코레일</h2>
+  <h2>🚄 MY에이콘레일</h2>
   <ul>
     <li onclick="location.href='<%=request.getContextPath()%>/mypage'">마이페이지</li>
     <li onclick="location.href='<%=request.getContextPath()%>/mypage/resdetail?resId=1'">승차권 조회</li>

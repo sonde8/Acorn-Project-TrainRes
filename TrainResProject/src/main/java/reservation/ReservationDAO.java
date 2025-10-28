@@ -6,14 +6,14 @@ import java.util.List;
 
 public class ReservationDAO {
 
-    private final String driver = "oracle.jdbc.driver.OracleDriver";
-    private final String url    = "jdbc:oracle:thin:@localhost:1521:testdb";
-    private final String user   = "scott";
-    private final String pass   = "tiger";
+	private final String DRIVER = "oracle.jdbc.driver.OracleDriver";
+    private final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
+    private final String USER = "system";
+    private final String PASSWORD = "1234";
 
     public ReservationDAO() {
         try {
-            Class.forName(driver);
+            Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -22,7 +22,7 @@ public class ReservationDAO {
     private Connection dbcon() {
         Connection con = null;
         try {
-            con = DriverManager.getConnection(url, user, pass);
+            con = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
             e.printStackTrace();
         }

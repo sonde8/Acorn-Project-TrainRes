@@ -7,7 +7,6 @@
 <title>승차권 상세보기</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mypage.css">
 
-
 </head>
 <body>
 <div class="container">

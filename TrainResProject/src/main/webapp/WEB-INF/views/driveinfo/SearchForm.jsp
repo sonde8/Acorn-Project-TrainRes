@@ -119,7 +119,7 @@
     .main-content {
         position: relative;
         width: 100%;
-        height: 70vh;
+        height: 85vh;
         min-height: 500px;
         background: 
                     url('https://info.korail.com/DATA/bbs/1017/20250613095401946_ysNc.jpg');
@@ -215,7 +215,7 @@
         background-color: #2c3e50;
         color: white;
         padding: 2rem 0;
-        margin-top: 3rem;
+        /* margin-top: 3rem; */
     }
 
     .footer-container {
@@ -415,5 +415,6 @@ Customer user = (Customer) session.getAttribute("cust");
             </div>
         </div>
     </div>
+    
 </body>
 </html>
