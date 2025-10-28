@@ -8,7 +8,7 @@ import javax.servlet.http.*;
 import customer.Customer;
 import customer.CustomerDAO;
 
-@WebServlet("/mypage/edit/save")  // ✅ URL 변경: 중복 방지
+@WebServlet("/mypage/edit/save")
 public class CustomerEditServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private final CustomerDAO dao = new CustomerDAO();
@@ -18,27 +18,29 @@ public class CustomerEditServlet extends HttpServlet {
             throws ServletException, IOException {
 
         req.setCharacterEncoding("UTF-8");
-        HttpSession session = req.getSession(false);
-        Customer cust = (Customer) (session != null ? session.getAttribute("cust") : null);
 
-        // 로그인 안 된 경우 로그인 페이지로 리다이렉트
+        HttpSession session = req.getSession(false);
+        Customer cust = (session != null) ? (Customer) session.getAttribute("cust") : null;
+
         if (cust == null) {
             resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
 
         String name = req.getParameter("name");
-        String pw = req.getParameter("password");
+        String pw   = req.getParameter("password");
 
         cust.setName(name);
-        cust.setPassword(pw);
+        if (pw != null && !pw.trim().isEmpty()) {
+            cust.setPassword(pw);
+        }
 
         int result = dao.update(cust);
 
-        req.setAttribute("message", result > 0 ? "✅ 회원 정보가 수정되었습니다." : "❌ 수정 실패! 다시 시도해주세요.");
+        req.setAttribute("message",
+                result > 0 ? "✅ 회원 정보가 수정되었습니다." : "❌ 수정 실패! 다시 시도해주세요.");
         req.setAttribute("customer", cust);
 
-        // 수정 완료 후 다시 페이지로 이동
         RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/views/mypage/mypage_edit.jsp");
         rd.forward(req, resp);
     }

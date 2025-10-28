@@ -24,6 +24,7 @@
       <tr><th>출발시각</th><td><%= res.getDeptTime() %></td></tr>
       <tr><th>도착시각</th><td><%= res.getArriTime() %></td></tr>
       <tr><th>예약일시</th><td><%= res.getResDate() %></td></tr>
+      <tr><th>요금</th><td><%= res.getAmount() %>원</td></tr>
     </table>
     <button class="btn-primary" onclick="history.back()">뒤로가기</button>
   </div>

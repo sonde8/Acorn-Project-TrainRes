@@ -54,7 +54,7 @@ public class SetSelectedTicketController extends HttpServlet{
 
             // 3. 다음 페이지인 좌석 선택 서블릿(팀원 담당)으로 리다이렉트
             // 💡 [필수 수정] 팀원과 좌석 선택 서블릿의 최종 URL을 협의하여 여기에 넣어주세요.
-            resp.sendRedirect("SeatSelectionPage");
+            resp.sendRedirect(req.getContextPath() + "/seat?drive_id=" + selectedTicket.getDriveId() + "&car_no=1"); //추가
 		} catch (NumberFormatException e) {
 			System.err.println("데이터 파싱오류:" + e.getMessage());
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST,  "잘못된 열차 정보 요청입니다");

@@ -172,8 +172,6 @@
 </style>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mypage.css">
-
-
 </head>
 <body>
 
@@ -250,7 +248,8 @@
       </tr>
       <% if (reservations != null && !reservations.isEmpty()) {
            for (Reservation r : reservations) { %>
-             <tr>
+             <tr style="cursor:pointer"
+                 onclick="location.href='${pageContext.request.contextPath}/mypage/resdetail?resId=<%=r.getResId()%>'">
                <td><%= r.getResId() %></td>
                <td><%= r.getTrainNo() %></td>
                <td><%= r.getDeptStation() %></td>
