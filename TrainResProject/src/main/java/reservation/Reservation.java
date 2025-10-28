@@ -12,8 +12,9 @@ public class Reservation {
     private Timestamp arriTime;
     private Timestamp resDate;
 
-    // ✅ 추가 필드 (요금)
     private int amount;
+    private Integer carNo;
+    private String seatNo;
 
     public int getResId() { return resId; }
     public void setResId(int resId) { this.resId = resId; }
@@ -42,11 +43,9 @@ public class Reservation {
     public int getAmount() { return amount; }
     public void setAmount(int amount) { this.amount = amount; }
 
-    @Override
-    public String toString() {
-        return "Reservation [resId=" + resId + ", custId=" + custId + ", trainNo=" + trainNo +
-               ", deptStation=" + deptStation + ", arriStation=" + arriStation +
-               ", deptTime=" + deptTime + ", arriTime=" + arriTime +
-               ", resDate=" + resDate + ", amount=" + amount + "]";
-    }
+    public Integer getCarNo() { return carNo; }
+    public void setCarNo(Integer carNo) { this.carNo = carNo; }
+
+    public String getSeatNo() { return seatNo; }
+    public void setSeatNo(String seatNo) { this.seatNo = seatNo; }
 }

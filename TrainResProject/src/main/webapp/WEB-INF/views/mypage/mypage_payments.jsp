@@ -6,7 +6,6 @@
 <meta charset="UTF-8">
 <title>결제 내역</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mypage.css">
-
 </head>
 <body>
 <div class="container">

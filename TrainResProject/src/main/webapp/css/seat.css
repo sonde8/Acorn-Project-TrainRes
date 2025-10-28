@@ -1,0 +1,53 @@
+@charset "UTF-8";
+
+body{ text-align : center;}
+
+.SeatChat{
+	display: grid;
+	grid-template-columns : 64px repeat(9, 64px);
+	grid-auto-rows : 64px;
+	column-gap : 12px;
+	row-gap : 10px;
+	margin : 20px auto;
+	padding : 16px;
+	width : max-content;
+}
+
+.seat{
+	
+	height : 60px;
+	margin: 0;
+	box-sizing : border-box;
+	border-radius: 10px;
+	border: 1px solid black;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.2s ease;
+}
+
+.seat:nth-child(2){
+	margin-bottom : 30px;
+}
+
+.available{cursor : pointer;}
+
+.reserved{background-color : gray; border-color: gray; cursor : not-allowed;}
+
+.selected{background-color : black; border-color : black; color : white; }
+
+.aisle-row{
+	height : 30px;
+	grid-column : 1 / span 10;
+}
+
+
+button.bt{
+	width:max-content;
+ 	margin: 200px auto 0;
+  	text-align:center;
+}
+
+
+
+
