@@ -1,47 +1,113 @@
 package payment;
 
- 
- 
+import Seat.SeatDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.sql.SQLException;
 
-/** 결제 성공 콜백: pg_token을 받아 approve 호출 후 결과를 JSP로 전달 */
 @WebServlet("/kakaoPaySuccess")
 public class KakaoPaySuccessServlet extends HttpServlet {
 
+    private static final long serialVersionUID = 1L;
+
+    private PaymentDAO paymentDAO;
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String pgToken = req.getParameter("pg_token");
-        if (pgToken == null) {
-            resp.sendError(400, "pg_token이 없습니다.");
+    public void init() {
+        this.paymentDAO = new PaymentDAO();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        req.setCharacterEncoding("UTF-8");
+        HttpSession session = req.getSession(false);
+
+        if (session == null) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "세션이 만료되었습니다. 다시 결제를 시도해주세요.");
             return;
         }
 
-        HttpSession session = req.getSession(false);
-        if (session == null) {
-            resp.sendError(400, "세션이 만료되었습니다. 처음부터 다시 시도해주세요.");
+        String pgToken = req.getParameter("pg_token");
+        if (pgToken == null || pgToken.trim().isEmpty()) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "pg_token 파라미터가 없습니다.");
             return;
         }
 
         OrderDTO order = (OrderDTO) session.getAttribute("pay_order");
-        KakaoPay kakaoPay = (KakaoPay) session.getAttribute("kakaoPaySvc");
+        KakaoPay kakaoPaySvc = (KakaoPay) session.getAttribute("kakaoPaySvc");
 
-        if (order == null || kakaoPay == null) {
-            resp.sendError(400, "결제 세션 정보가 없습니다. 처음부터 다시 시도해주세요.");
+        if (order == null || kakaoPaySvc == null) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "결제 세션 정보가 없습니다. 다시 시도해주세요.");
             return;
         }
 
-        // 승인 요청: JSON 결과(문자열) 반환 (VO 매핑 버전도 가능)
-        String approvalJson = kakaoPay.kakaoPayInfo(pgToken, order);
-        req.setAttribute("resultJson", approvalJson);
+        String approveJson;
+        try {
+            approveJson = kakaoPaySvc.kakaoPayApprove(pgToken, order);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "카카오 결제 승인 중 오류가 발생했습니다.");
+            return;
+        }
 
-        // 사용 완료된 세션 데이터 정리
+        try {
+            paymentDAO.insertReservation(order);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            SeatDAO seatDAO = new SeatDAO();
+
+            int carNoInt = 0;
+            try {
+                if (order.getCarNo() != null) {
+                    carNoInt = Integer.parseInt(order.getCarNo());
+                }
+            } catch (NumberFormatException nfe) {
+                nfe.printStackTrace();
+            }
+
+            if (order.getSeatNo() != null && carNoInt > 0) {
+                boolean ok = seatDAO.reserveSeat(
+                        order.getDriveId(),
+                        carNoInt,
+                        order.getSeatNo(),
+                        order.getCustId()
+                );
+                if (!ok) {
+                    System.err.println("좌석 점유 실패 (이미 예약된 좌석일 가능성)");
+                }
+            } else {
+                System.err.println("좌석 정보가 없어 좌석 점유를 건너뜀");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         session.removeAttribute("pay_order");
         session.removeAttribute("kakaoPaySvc");
 
-        req.getRequestDispatcher("/WEB-INF/views/kakaoPaySuccess.jsp").forward(req, resp);
+        req.setAttribute("order", order);
+        req.setAttribute("approveJson", approveJson);
+
+        req.getRequestDispatcher("/WEB-INF/views/payment/kakaoPaySuccess.jsp")
+           .forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        doGet(req, resp);
     }
 }

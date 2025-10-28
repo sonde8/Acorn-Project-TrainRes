@@ -1,49 +1,69 @@
 package payment;
 
- 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 
-/** 결제 시작 화면: driveId로 조회한 정보를 모델에 담아 JSP로 포워드 */
 @WebServlet("/kakaoPayView")
 public class KakaoPayPageServlet extends HttpServlet {
 
-    private PaymentDAO paymentDAO;
+	private static final long serialVersionUID = 1L;
 
-    @Override
-    public void init() {
-        // 실제로는 JNDI DataSource를 주입하거나, 생성자 파라미터로 넘겨주는 구조 추천
-        this.paymentDAO = new PaymentDAO();
-    }
+	private PaymentDAO paymentDAO;
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
+	@Override
+	public void init() {
+		this.paymentDAO = new PaymentDAO();
+	}
 
-        String driveIdStr = req.getParameter("driveId");
-        if (driveIdStr == null) {
-            resp.sendError(400, "잘못된 요청입니다. (driveId 누락)");
-            return;
-        }
+	private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        long driveId;
-        try {
-            driveId = Long.parseLong(driveIdStr);
-        } catch (NumberFormatException e) {
-            resp.sendError(400, "잘못된 요청입니다. (driveId 형식 오류)");
-            return;
-        }
+		req.setCharacterEncoding("UTF-8");
 
-        PaymentView v = paymentDAO.findDriveForPay(driveId);
-        if (v == null) {
-            resp.sendError(400, "해당 운행 정보가 없습니다.");
-            return;
-        }
+		String driveIdStr = req.getParameter("driveId");
+		if (driveIdStr == null || driveIdStr.trim().isEmpty()) {
+			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "driveId 가 없습니다.");
+			return;
+		}
 
-        req.setAttribute("v", v);
-        // /WEB-INF/views/kakaoPay.jsp 로 포워드
-        req.getRequestDispatcher("/WEB-INF/views/kakaoPay.jsp").forward(req, resp);
-    }
+		long driveId;
+		try {
+			driveId = Long.parseLong(driveIdStr);
+		} catch (NumberFormatException e) {
+			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "driveId 형식 오류");
+			return;
+		}
+
+		String carNo = req.getParameter("carNo");
+		String seatNo = req.getParameter("seatNo");
+
+		PaymentView v = paymentDAO.findDriveForPay(driveId);
+		if (v == null) {
+			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "해당 운행 정보를 찾을 수 없습니다.");
+			return;
+		}
+
+		req.setAttribute("v", v);
+
+		req.setAttribute("carNo", carNo);
+		req.setAttribute("seatNo", seatNo);
+
+		req.getRequestDispatcher("/WEB-INF/views/payment/kakaoPay.jsp").forward(req, resp);
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		process(req, resp);
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		process(req, resp);
+
+		// /WEB-INF/views/kakaoPay.jsp 로 포워드
+		// req.getRequestDispatcher("/WEB-INF/views/payment/kakaoPay.jsp").forward(req,
+		// resp);
+
+	}
 }

@@ -1,51 +1,114 @@
 package payment;
- 
 
-import java.io.IOException;
+import customer.Customer;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
+import java.io.IOException;
 
-/** ready 요청: hidden 필드로 넘어온 주문 정보를 기반으로 카카오 결제 페이지로 리다이렉트 */
-@WebServlet(name = "KakaoPayReadyServlet", urlPatterns = "/kakaoPay", loadOnStartup = 1)
+@WebServlet("/kakaoPayReady")
 public class KakaoPayReadyServlet extends HttpServlet {
 
-    private KakaoPay kakaoPay;
+    private static final long serialVersionUID = 1L;
+
+    private PaymentDAO paymentDAO;
 
     @Override
     public void init() {
-        this.kakaoPay = new KakaoPay(); // 서블릿용 KakaoPay(스프링 제거 버전) 사용
+        this.paymentDAO = new PaymentDAO();
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
         req.setCharacterEncoding("UTF-8");
+        HttpSession session = req.getSession();
 
-        OrderDTO order = new OrderDTO();
-        order.setPartner_order_id(req.getParameter("partner_order_id"));
-        order.setPartner_user_id(req.getParameter("partner_user_id"));
-        order.setItem_name(req.getParameter("item_name"));
+        Customer cust = (Customer) session.getAttribute("cust");
+        String custId = (cust != null && cust.getCustId() != null)
+                ? cust.getCustId()
+                : "GUEST";
 
-        try {
-            order.setQuantity( (req.getParameter("quantity")));
-            order.setTotal_amount (req.getParameter("total_amount"));
-            
-        } catch (NumberFormatException e) {
-            resp.sendError(400, "수량/금액 형식이 올바르지 않습니다.");
+        String driveIdStr = req.getParameter("driveId");
+        if (driveIdStr == null || driveIdStr.trim().isEmpty()) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "driveId 파라미터가 없습니다.");
             return;
         }
 
-        // ready 호출 (리다이렉트 URL 반환)
-        String next = kakaoPay.kakaoPayReady(order);
-        // 승인 단계에서 필요하므로 주문과 kakaoPay(혹은 tid)를 세션에 보관
-        HttpSession session = req.getSession(true);
-        session.setAttribute("pay_order", order);
-        session.setAttribute("kakaoPaySvc", kakaoPay);
+        long driveId;
+        try {
+            driveId = Long.parseLong(driveIdStr);
+        } catch (NumberFormatException e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "driveId 형식이 올바르지 않습니다.");
+            return;
+        }
 
-        resp.sendRedirect(next); // 카카오 결제 페이지로 이동
+        String carNo  = req.getParameter("carNo");
+        String seatNo = req.getParameter("seatNo");
+
+        PaymentView v = paymentDAO.findDriveForPay(driveId);
+        if (v == null) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "해당 운행 정보를 찾을 수 없습니다.");
+            return;
+        }
+
+        OrderDTO order = new OrderDTO();
+        order.setPartner_order_id("ORDER_" + System.currentTimeMillis());
+        order.setPartner_user_id(custId);
+
+        String itemName =
+                v.getTrainNo() + " "
+              + v.getDeptStationName() + "→" + v.getArriStationName()
+              + " (" + v.getDeptTime() + " ~ " + v.getArriTime() + ")";
+        order.setItem_name(itemName);
+
+        order.setQuantity("1");
+        order.setTotal_amount(String.valueOf(v.getPrice()));
+
+        order.setDriveId((int) driveId);
+        order.setCustId(custId);
+
+        order.setCarNo(carNo);
+        order.setSeatNo(seatNo);
+
+        String baseUrl =
+                req.getScheme() + "://" +
+                req.getServerName() +
+                ":" + req.getServerPort() +
+                req.getContextPath();
+
+        KakaoPay kakaoPaySvc = new KakaoPay();
+        String nextRedirectUrl;
+        try {
+            nextRedirectUrl = kakaoPaySvc.kakaoPayReady(order, baseUrl);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "카카오페이 준비 호출 중 오류가 발생했습니다.");
+            return;
+        }
+
+        if (nextRedirectUrl == null || nextRedirectUrl.isEmpty()) {
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "카카오페이에서 유효한 redirect URL을 받지 못했습니다.");
+            return;
+        }
+
+        session.setAttribute("pay_order", order);
+        session.setAttribute("kakaoPaySvc", kakaoPaySvc);
+
+        resp.sendRedirect(nextRedirectUrl);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED,
+                "POST로만 접근 가능합니다.");
     }
 }

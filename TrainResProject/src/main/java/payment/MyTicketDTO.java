@@ -1,26 +1,26 @@
 package payment;
 
-public class PaymentView {
+public class MyTicketDTO {
 
-    private long driveId;
-    private String deptStationName;
-    private String arriStationName;
+    private int driveId;
     private String trainNo;
+    private String deptName;
+    private String arriName;
     private String deptTime;
     private String arriTime;
     private int price;
 
-    public long getDriveId() { return driveId; }
-    public void setDriveId(long driveId) { this.driveId = driveId; }
-
-    public String getDeptStationName() { return deptStationName; }
-    public void setDeptStationName(String deptStationName) { this.deptStationName = deptStationName; }
-
-    public String getArriStationName() { return arriStationName; }
-    public void setArriStationName(String arriStationName) { this.arriStationName = arriStationName; }
+    public int getDriveId() { return driveId; }
+    public void setDriveId(int driveId) { this.driveId = driveId; }
 
     public String getTrainNo() { return trainNo; }
     public void setTrainNo(String trainNo) { this.trainNo = trainNo; }
+
+    public String getDeptName() { return deptName; }
+    public void setDeptName(String deptName) { this.deptName = deptName; }
+
+    public String getArriName() { return arriName; }
+    public void setArriName(String arriName) { this.arriName = arriName; }
 
     public String getDeptTime() { return deptTime; }
     public void setDeptTime(String deptTime) { this.deptTime = deptTime; }
