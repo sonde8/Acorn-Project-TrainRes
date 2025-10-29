@@ -4,29 +4,24 @@ import java.sql.*;
 
 public class CustomerDAO {
 
-<<<<<<< HEAD
+ 
     // ✅ Oracle 11g XE 버전 환경
 	private final String DRIVER = "oracle.jdbc.driver.OracleDriver";
     private final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
     private final String USER = "system";
     private final String PASSWORD = "1234";
-=======
-    private final String driver = "oracle.jdbc.driver.OracleDriver";
-    private final String url    = "jdbc:oracle:thin:@localhost:1521:testdb";
-    private final String user   = "scott";
-    private final String pass   = "tiger";
->>>>>>> a8e3c699e0f4763545bf5de65cd713feb670ffcf
+ 
 
     public CustomerDAO() {
         try {
-            Class.forName(driver);
+            Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
     private Connection dbcon() throws SQLException {
-        return DriverManager.getConnection(url, user, pass);
+        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
     // 회원가입

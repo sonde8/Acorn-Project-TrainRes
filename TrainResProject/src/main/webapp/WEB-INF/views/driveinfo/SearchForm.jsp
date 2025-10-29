@@ -195,6 +195,7 @@
     Customer user = (Customer) session.getAttribute("cust");
 %>
 
+<!-- 상단 네비 -->
 <div class="top-nav">
     <div class="top-nav-container">
         <div class="top-nav-left">
@@ -203,30 +204,34 @@
             <button class="nav-button">기차여행</button>
         </div>
         <div class="top-nav-right">
-        <%
-            if (user != null) {
-        %>
-            <span style="font-weight: bold; color: #333;"><%= user.getName() %>님, 환영합니다!</span>
-            <a href="logout">로그아웃</a>
-        <%
-            } else {
-        %>
-            <a href="login">로그인</a>
-            <a href="join">회원가입</a>
-        <%
-            }
-        %>
+            <%
+                if (user != null) {
+            %>
+                <span style="font-weight: bold; color: #333;"><%= user.getName() %>님, 환영합니다!</span>
+                <a href="logout">로그아웃</a>
+                <a href="mypage">마이페이지</a>
+            <%
+                } else {
+            %>
+                <a href="login">로그인</a>
+                <a href="join">회원가입</a>
+            <%
+                }
+            %>
             <a href="#">고객센터</a>
         </div>
     </div>
 </div>
 
+<!-- 헤더 -->
 <div class="header">
     <div class="header-container">
-        <div class="logo">
-            <img src="${pageContext.request.contextPath}/images/logo2.png" 
-                 alt="KTX 로고" style="height: 80px;">
-        </div>
+        <a href="${pageContext.request.contextPath}/DriveInfoList" class="logo-link">
+        		<div class="logo">
+            		<img src="${pageContext.request.contextPath}/images/logo2.png" 
+         			alt="KTX 로고" style="height: 80px;">
+            	</div>
+        	</a>
         <ul class="main-menu">
             <li>승차권</li>
             <li>철도역·열차</li>
@@ -320,10 +325,8 @@
             <p style="margin-top: 1rem; font-size: 0.8rem;">Copyright © Acorn Railroad Corporation. All rights reserved.</p>
         </div>
     </div>
-<<<<<<< HEAD
-    
-=======
+
 </div>
->>>>>>> a8e3c699e0f4763545bf5de65cd713feb670ffcf
+
 </body>
 </html>

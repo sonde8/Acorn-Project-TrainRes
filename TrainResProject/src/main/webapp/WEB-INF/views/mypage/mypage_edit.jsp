@@ -7,7 +7,7 @@
 <title>회원정보 수정</title>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mypage.css">
-<<<<<<< HEAD
+
 
 <style>
     * {
@@ -171,8 +171,7 @@
     }
 </style>
 
-=======
->>>>>>> a8e3c699e0f4763545bf5de65cd713feb670ffcf
+
 </head>
 <body>
 

@@ -6,10 +6,10 @@ import java.util.List;
 
 public class PaymentDAO {
 
-    private final String driver = "oracle.jdbc.driver.OracleDriver";
-    private final String url    = "jdbc:oracle:thin:@localhost:1521:testdb";
-    private final String user   = "scott";
-    private final String pass   = "tiger";
+	private final String driver = "oracle.jdbc.driver.OracleDriver";
+    private final String url = "jdbc:oracle:thin:@localhost:1521:xe";
+    private final String user = "system";
+    private final String pass = "1234";
 
     public PaymentDAO() {
         try {

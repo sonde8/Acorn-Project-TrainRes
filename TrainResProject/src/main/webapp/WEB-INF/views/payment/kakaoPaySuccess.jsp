@@ -47,7 +47,7 @@
     </div>
 
     <div class="btn-wrap">
-        <button class="btn btn-home" onclick="location.href='${pageContext.request.contextPath}/home'">홈으로</button>
+        <button class="btn btn-home" onclick="location.href='${pageContext.request.contextPath}/DriveInfoList'">홈으로</button>
         <button class="btn btn-myp" onclick="location.href='${pageContext.request.contextPath}/mypage'">마이페이지</button>
     </div>
 

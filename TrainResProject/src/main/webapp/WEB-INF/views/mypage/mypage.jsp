@@ -176,8 +176,7 @@
 <body>
 
 <% Customer user = (Customer) session.getAttribute("cust"); %>
-<!-- 상단 네비게이션 -->
-    <div class="top-nav">
+<div class="top-nav">
         <div class="top-nav-container">
             <div class="top-nav-left">
                 <button class="nav-button">한국철도</button>
@@ -186,34 +185,33 @@
             </div>
             <div class="top-nav-right">
             <%
-    			if (user != null) {
-        		// 로그인 상태: 사용자 이름과 로그아웃 링크 표시
-			%>
+                if (user != null) {
+                // 로그인 상태: 사용자 이름과 로그아웃 링크 표시
+            %>
                 <span style="font-weight: bold; color: #333;"><%= user.getName() %>님, 환영합니다!</span>
                 <a href="logout">로그아웃</a> <%-- 로그아웃 서블릿으로 연결 --%>
                 <a href="${pageContext.request.contextPath}/mypage">마이페이지</a> <%-- 마이페이지 @websevlet 값 넣으시면 돼욧 --%>
-			<%
-    			} else {
-        		// 로그아웃 상태: 로그인 및 회원가입 링크 표시
-			%>
+            <%
+                } else {
+                // 로그아웃 상태: 로그인 및 회원가입 링크 표시
+            %>
                 <a href="login">로그인</a>
                 <a href="join">회원가입</a>
-			<%
-    			}
-			%>
+            <%
+                }
+            %>
                 <a href="#">고객센터</a>
             </div>
         </div>
     </div>
 
-    <!-- 헤더 -->
     <div class="header">
         <div class="header-container">
             <a href="${pageContext.request.contextPath}/DriveInfoList" class="logo-link">
         		<div class="logo">
-            		<img src="${pageContext.request.contextPath}/images/logo2.png" 
-         			alt="KTX 로고" style="height: 80px;">
-            	</div>
+        			<img src="${pageContext.request.contextPath}/images/logo2.png" 
+        			alt="KTX 로고" style="height: 80px;">
+        		</div>
         	</a>
             <ul class="main-menu">
                 <li>승차권</li>
@@ -256,7 +254,9 @@
                <td><%= r.getArriStation() %></td>
                <td><%= r.getDeptTime() %></td>
                <td><%= r.getArriTime() %></td>
-               <td><%= r.getResDate() %></td>
+               
+               <td><%= r.getFormattedResDate() %></td>
+               
              </tr>
       <% } } else { %>
         <tr><td colspan="7" class="no-data">예약 내역이 없습니다.</td></tr>
@@ -264,8 +264,7 @@
     </table>
   </div>
 </div>
-<!-- 푸터 -->
-    <div class="footer">
+<div class="footer">
         <div class="footer-container">
             <ul class="footer-links">
                 <li><a href="#">이용약관</a></li>

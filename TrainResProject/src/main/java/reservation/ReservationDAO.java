@@ -6,13 +6,12 @@ import java.util.List;
 
 public class ReservationDAO {
 
-	private final String DRIVER = "oracle.jdbc.driver.OracleDriver";
+    private final String DRIVER = "oracle.jdbc.driver.OracleDriver";
     private final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
     private final String USER = "system";
     private final String PASSWORD = "1234";
 
     public ReservationDAO() {
- 
         try {
             Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
@@ -28,18 +27,18 @@ public class ReservationDAO {
             e.printStackTrace();
         }
         return con;
- 
-   
     }
 
     public List<Reservation> findByCustomerId(String custId) {
         List<Reservation> list = new ArrayList<>();
 
+        // 🌟 SQL 쿼리 수정: R.RES_DATE 원본과 포맷팅된 문자열(RES_DATE_STR) 모두 가져옴
         String sql =
             "SELECT R.RES_ID, T.TRAIN_NO, " +
             "       S1.STATION_NAME AS DEPT_STATION, " +
             "       S2.STATION_NAME AS ARRI_STATION, " +
-            "       D.DEPT_TIME, D.ARRI_TIME, R.RES_DATE, " +
+            "       D.DEPT_TIME, D.ARRI_TIME, R.RES_DATE, " + // 원본 RES_DATE 추가
+            "       TO_CHAR(R.RES_DATE, 'YYYY-MM-DD HH24:MI') AS RES_DATE_STR, " + // 포맷팅 문자열
             "       RT.PRICE AS AMOUNT " +
             "  FROM RES R " +
             "  JOIN DRIVEINFO D ON R.DRIVE_ID = D.DRIVE_ID " +
@@ -63,7 +62,13 @@ public class ReservationDAO {
                     r.setArriStation(rs.getString("ARRI_STATION"));
                     r.setDeptTime(rs.getTimestamp("DEPT_TIME"));
                     r.setArriTime(rs.getTimestamp("ARRI_TIME"));
-                    r.setResDate(rs.getTimestamp("RES_DATE"));
+                    
+                    // 🌟 수정: 원본 Timestamp를 기존 필드에 설정
+                    r.setResDate(rs.getTimestamp("RES_DATE")); 
+                    
+                    // 🌟 수정: 포맷팅된 문자열을 새 필드에 설정
+                    r.setFormattedResDate(rs.getString("RES_DATE_STR"));
+                    
                     r.setAmount(rs.getInt("AMOUNT"));
                     list.add(r);
                 }
@@ -76,11 +81,13 @@ public class ReservationDAO {
     public Reservation findByResId(int resId) {
         Reservation r = null;
 
+        // 🌟 SQL 쿼리 수정: R.RES_DATE 원본과 포맷팅된 문자열(RES_DATE_STR) 모두 가져옴
         String sql =
             "SELECT R.RES_ID, R.CUST_ID, T.TRAIN_NO, " +
             "       S1.STATION_NAME AS DEPT_STATION, " +
             "       S2.STATION_NAME AS ARRI_STATION, " +
-            "       D.DEPT_TIME, D.ARRI_TIME, R.RES_DATE, " +
+            "       D.DEPT_TIME, D.ARRI_TIME, R.RES_DATE, " + // 원본 RES_DATE 추가
+            "       TO_CHAR(R.RES_DATE, 'YYYY-MM-DD HH24:MI') AS RES_DATE_STR, " + // 포맷팅 문자열
             "       RT.PRICE AS AMOUNT " +
             "  FROM RES R " +
             "  JOIN DRIVEINFO D ON R.DRIVE_ID = D.DRIVE_ID " +
@@ -104,7 +111,13 @@ public class ReservationDAO {
                     r.setArriStation(rs.getString("ARRI_STATION"));
                     r.setDeptTime(rs.getTimestamp("DEPT_TIME"));
                     r.setArriTime(rs.getTimestamp("ARRI_TIME"));
-                    r.setResDate(rs.getTimestamp("RES_DATE"));
+                    
+                    // 🌟 수정: 원본 Timestamp를 기존 필드에 설정
+                    r.setResDate(rs.getTimestamp("RES_DATE")); 
+                    
+                    // 🌟 수정: 포맷팅된 문자열을 새 필드에 설정
+                    r.setFormattedResDate(rs.getString("RES_DATE_STR")); 
+                    
                     r.setAmount(rs.getInt("AMOUNT"));
                 }
             }
@@ -116,7 +129,7 @@ public class ReservationDAO {
     // (안 써도 되지만 놔둬도 됨)
     public int insertReservation(String custId, int driveId) {
         String sql = "INSERT INTO RES (RES_ID, CUST_ID, DRIVE_ID, RES_DATE) " +
-                     "VALUES (RES_SEQ.NEXTVAL, ?, ?, SYSDATE)";
+                     "VALUES (SEQ_RES_ID.NEXTVAL, ?, ?, SYSTIMESTAMP)";
         try (Connection con = dbcon();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, custId);

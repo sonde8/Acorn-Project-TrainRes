@@ -98,6 +98,12 @@ public class KakaoPaySuccessServlet extends HttpServlet {
         session.removeAttribute("pay_order");
         session.removeAttribute("kakaoPaySvc");
 
+     // ⭐️⭐️⭐️ 문제 해결을 위해 추가할 코드: 열차 목록 선택 상태를 유지하던 세션 정보 삭제
+        session.removeAttribute("selectedSeat_driveId"); 
+        session.removeAttribute("selectedSeat_carNo");
+        session.removeAttribute("selectedSeat_no");
+        // ⭐️⭐️⭐️
+        
         req.setAttribute("order", order);
         req.setAttribute("approveJson", approveJson);
 

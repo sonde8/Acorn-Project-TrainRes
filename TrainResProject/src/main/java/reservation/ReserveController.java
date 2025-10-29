@@ -5,6 +5,8 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import customer.Customer;
+
 @WebServlet("/Reserve")
 public class ReserveController extends HttpServlet {
 
@@ -15,13 +17,22 @@ public class ReserveController extends HttpServlet {
             throws ServletException, IOException {
 
         req.setCharacterEncoding("UTF-8");
-
-        // 여기서는 일단 받은 정보 세션에 잠깐 저장만 하고
-        // 메인 페이지로 돌려보내는 형태로 마무리.
-        // (필요 없으면 이 서블릿 자체를 프로젝트에서 제거해도 무방)
-
         HttpSession session = req.getSession();
 
+        // ✅ 1️⃣ 로그인 여부 확인
+        Customer loginUser = (Customer) session.getAttribute("cust");
+        if (loginUser == null) {
+            // 로그인 안 되어 있을 경우 → 현재 요청(POST)을 나중에 다시 실행할 수 있도록 세션에 저장
+            String query = req.getQueryString() != null ? "?" + req.getQueryString() : "";
+            String currentURL = req.getRequestURI() + query;
+            session.setAttribute("redirectAfterLogin", currentURL);
+
+            // 로그인 페이지로 이동
+            resp.sendRedirect(req.getContextPath() + "/login");
+            return;
+        }
+
+        // ✅ 2️⃣ 로그인 되어 있는 경우 → 예매 정보 세션에 저장
         String driveId    = req.getParameter("driveId");
         String trainNo    = req.getParameter("trainNo");
         String dept       = req.getParameter("deptStation");
@@ -36,6 +47,7 @@ public class ReserveController extends HttpServlet {
         session.setAttribute("lastReserved_deptTime", deptTime);
         session.setAttribute("lastReserved_arriTime", arriTime);
 
+        // ✅ 3️⃣ 정상 예매 후 메인 페이지로 이동
         resp.sendRedirect(req.getContextPath() + "/DriveInfoList");
     }
 }

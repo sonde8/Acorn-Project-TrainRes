@@ -10,10 +10,10 @@ import java.util.ArrayList;
 
 public class SeatDAO {
 
-    String driver ="oracle.jdbc.driver.OracleDriver";
-    String url="jdbc:oracle:thin:@localhost:1521:testdb";
-    String user="scott";
-    String password="tiger";
+	private final String driver = "oracle.jdbc.driver.OracleDriver";
+    private final String url = "jdbc:oracle:thin:@localhost:1521:xe";
+    private final String user = "system";
+    private final String password = "1234";
 
     // DB 연결하고 연결된 커넥션 객체를 반환
     public Connection dbcon() {
