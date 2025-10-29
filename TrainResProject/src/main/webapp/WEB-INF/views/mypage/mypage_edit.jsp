@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="customer.Customer" %>
+<%@page import="customer.UserDTO"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -175,7 +176,9 @@
 </head>
 <body>
 
-<% Customer user = (Customer) session.getAttribute("cust"); %>
+<% 
+UserDTO user = (UserDTO) session.getAttribute("cust");	 
+%>
 <!-- 상단 네비게이션 -->
     <div class="top-nav">
         <div class="top-nav-container">

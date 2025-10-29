@@ -1,6 +1,6 @@
 package payment;
 
-import customer.Customer;
+import customer.UserDTO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,9 +26,10 @@ public class KakaoPayReadyServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         HttpSession session = req.getSession();
 
-        Customer cust = (Customer) session.getAttribute("cust");
-        String custId = (cust != null && cust.getCustId() != null)
-                ? cust.getCustId()
+        UserDTO user = (UserDTO) session.getAttribute("cust");
+//        Customer cust = (Customer) session.getAttribute("cust");
+        String custId = (user != null && user.getCustId() != null)
+                ? user.getCustId()
                 : "GUEST";
 
         String driveIdStr = req.getParameter("driveId");

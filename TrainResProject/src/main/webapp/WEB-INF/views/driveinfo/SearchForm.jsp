@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="customer.Customer" %>
+<%@page import="customer.UserDTO"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -192,7 +192,7 @@
 <body>
 
 <%
-    Customer user = (Customer) session.getAttribute("cust");
+	UserDTO user = (UserDTO) session.getAttribute("cust");
 %>
 
 <!-- 상단 네비 -->

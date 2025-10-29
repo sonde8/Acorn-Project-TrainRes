@@ -1,5 +1,7 @@
 package mypage;
 
+import customer.UserDTO;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -29,9 +31,11 @@ public class CustomerMyPageServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = req.getSession(false);
-        Customer cust = (session != null) ? (Customer) session.getAttribute("cust") : null;
+        // UserDTO user = (UserDTO) session.getAttribute("cust");
+        UserDTO user = (session != null) ? (UserDTO) session.getAttribute("cust") : null;
+        
 
-        if (cust == null) {
+        if (user == null) {
             resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
@@ -41,8 +45,8 @@ public class CustomerMyPageServlet extends HttpServlet {
 
         switch (path) {
             case "/mypage": {
-                Customer fresh = cdao.findById(cust.getCustId());
-                List<Reservation> reservations = rdao.findByCustomerId(cust.getCustId());
+                Customer fresh = cdao.findById(user.getCustId());
+                List<Reservation> reservations = rdao.findByCustomerId(user.getCustId());
 
                 req.setAttribute("customer", fresh);
                 req.setAttribute("reservations", reservations);
@@ -62,14 +66,14 @@ public class CustomerMyPageServlet extends HttpServlet {
             }
 
             case "/mypage/payments": {
-                List<PaymentView> payments = pdao.findByCustomerId(cust.getCustId());
+                List<PaymentView> payments = pdao.findByCustomerId(user.getCustId());
                 req.setAttribute("payments", payments);
                 view = "/WEB-INF/views/mypage/mypage_payments.jsp";
                 break;
             }
 
             case "/mypage/edit": {
-                Customer fresh = cdao.findById(cust.getCustId());
+                Customer fresh = cdao.findById(user.getCustId());
                 req.setAttribute("customer", fresh);
                 view = "/WEB-INF/views/mypage/mypage_edit.jsp";
                 break;

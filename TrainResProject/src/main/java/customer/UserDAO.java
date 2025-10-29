@@ -17,10 +17,10 @@ public class UserDAO {
     // private static final String CUST = "scott";
     // private static final String PASSWORD = "tiger";
     
-    private final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    private final String URL = "jdbc:oracle:thin:@localhost:1521:testdb";
-    private final String USER = "scott";
-    private final String PASSWORD = "tiger";
+	private final String DRIVER = "oracle.jdbc.driver.OracleDriver";
+    private final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
+    private final String USER = "system";
+    private final String PASSWORD = "1234";
     
 
 	// DB 연결 메서드

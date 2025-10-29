@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="reservation.Reservation, customer.Customer" %>
+<%@page import="customer.UserDTO"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -174,7 +175,7 @@
 <body>
 
 <%
-    Customer user = (Customer) session.getAttribute("cust");
+    UserDTO user = (UserDTO) session.getAttribute("cust");	
 %>
 
 <div class="top-nav">

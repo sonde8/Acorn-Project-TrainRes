@@ -1,7 +1,8 @@
+<%@page import="customer.UserDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page import="customer.Customer" %>
+ 
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -219,7 +220,7 @@
 <body>
 
 <%
-    Customer user = (Customer) session.getAttribute("cust");
+     UserDTO user = (UserDTO) session.getAttribute("cust");
 %>
 
 <!-- 상단 네비 -->
