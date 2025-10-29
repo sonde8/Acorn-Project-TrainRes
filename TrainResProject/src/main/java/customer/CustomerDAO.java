@@ -11,6 +11,7 @@ public class CustomerDAO {
     private final String USER = "system";
     private final String PASSWORD = "1234";
  
+ 
 
     public CustomerDAO() {
         try {

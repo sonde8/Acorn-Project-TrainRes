@@ -1,0 +1,367 @@
+/* 기본 스타일 초기화 */
+
+
+
+body{
+
+    padding: 0;
+
+    margin: 0;
+
+ 
+
+
+
+}
+
+
+
+ 
+
+
+
+/* 전체 로그인 컨테이너 */
+
+.login-container {
+
+    width: 450px; /* 고정 너비 지정 (코레일 화면 유사) */
+
+    background-color: #fff;
+
+    border: 1px solid #e0e0e0;
+
+    padding: 30px;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* 은은한 그림자 */
+
+   
+
+    /* ******** [수정 1: 정렬 및 중앙 배치] ******** */
+
+    text-align: left; /* 내부 텍스트 및 폼 요소를 왼쪽 기준으로 설정 (핵심) */
+
+    /* ******************************************* */
+
+}
+
+
+
+/* 상단 헤더 */
+
+.login-header {
+
+    font-size: 18px;
+
+    color: #333;
+
+    text-align: left;
+
+    margin-bottom: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding-left: 10px;
+
+}
+
+.login-header .icon {
+
+    font-size: 20px;
+
+    margin-right: 5px;
+
+    width: 100%;
+
+}
+
+
+
+/* 탭 메뉴 */
+
+.tabs {
+
+   
+
+    display: flex;
+
+    border-bottom: 2px solid #ddd;
+
+    margin-bottom: 20px;
+
+}
+
+
+
+
+
+
+
+.tab-button.active {
+
+   
+
+    color: #007bff; /* 코레일의 파란색 계열 */
+
+    font-weight: bold;
+
+    border-bottom-color: #007bff; /* 활성화된 탭 하단에 파란색 선 */
+
+}
+
+
+
+/* 로그인 폼 영역 */
+
+/* .login-form-area 전체를 감싸는 영역은 이미 부모(.login-container)에서 왼쪽 정렬을 상속받습니다. */
+
+
+
+.login-form-area h3 {
+
+    text-align: left;
+
+    font-size: 18px;
+
+    color: #333;
+
+    /* h3에 <br>이 있으므로 p 태그 스타일을 h3에 통합할 필요 없음 */
+
+    margin-bottom: 20px; /* h3 아래에 여백 추가 */
+
+    margin-top: 0;
+
+}
+
+
+
+/* P 태그는 현재 HTML에서 사용되지 않지만, 혹시 모를 경우를 대비해 스타일을 유지합니다. */
+
+.login-form-area p {
+
+    text-align: left;
+
+    font-size: 14px;
+
+    color: #666;
+
+    margin-top: 0;
+
+    margin-bottom: 20px;
+
+}
+
+
+
+/* 입력 필드 그룹 */
+
+.input-group {
+
+    margin-bottom: 15px;
+
+    position: relative;
+
+}
+
+
+
+.input-field {
+
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #ccc;
+
+    box-sizing: border-box;
+
+    font-size: 16px;
+
+    /* 회원번호 필드는 살짝 파란색이 도는 배경 */
+
+    background-color: #f0f8ff;
+
+}
+
+
+
+.input-field:focus {
+
+    outline: none;
+
+    border-color: #007bff;
+
+    box-shadow: 0 0 0 1px #007bff;
+
+}
+
+
+
+/* 비밀번호 그룹의 마우스 입력 버튼 */
+
+.password-group .input-field {
+
+    /* ******** [수정 3: 비밀번호 배경색] ******** */
+
+    /* 코레일 원본 화면과 유사하게 흰색으로 설정 */
+
+    background-color: #fff;
+
+}
+
+
+
+.mouse-input {
+
+    position: absolute;
+
+    right: 15px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    font-size: 12px;
+
+    color: #888;
+
+    cursor: pointer;
+
+}
+
+
+
+/* 옵션 및 안내 문구 */
+
+.options {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+
+    font-size: 13px;
+
+    text-align: left;
+
+}
+
+
+
+.checkbox-container {
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    user-select: none;
+
+    color: #666;
+
+}
+
+
+
+.login-info {
+
+    color: #888;
+
+}
+
+
+
+/* 로그인 버튼 */
+
+.login-button {
+
+    width: 100%;
+
+    padding: 15px;
+
+    background-color: #007bff; /* 코레일 파란색 */
+
+    color: white;
+
+    border: none;
+
+    border-radius: 4px;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-bottom: 25px;
+
+    transition: background-color 0.3s ease;
+
+}
+
+
+
+.login-button:hover {
+
+    background-color: #0056b3;
+
+}
+
+
+
+/* 하단 링크 */
+
+.footer-links {
+
+    font-size: 14px;
+
+    color: #666;
+
+    margin-bottom: 30px;
+
+    /* ******** [수정 2: 중앙 정렬 복구] ******** */
+
+    text-align: center;
+
+}
+
+
+
+.footer-links a {
+
+    color: #333;
+
+    text-decoration: none;
+
+    padding: 0 5px;
+
+}
+
+
+
+.footer-links a:hover {
+
+    text-decoration: underline;
+
+}
+
+
+
+/* 하단 장식 아이콘 */
+
+.decoration-icon {
+
+    font-size: 24px;
+
+    color: #d9534f;
+
+    /* ******** [수정 2: 중앙 정렬 복구] ******** */
+
+    text-align: center;
+
+}
