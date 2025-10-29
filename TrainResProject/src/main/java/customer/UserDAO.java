@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserDAO {
 	public UserDAO() {
@@ -17,12 +18,13 @@ public class UserDAO {
     // private static final String PASSWORD = "tiger";
     
     private final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-    private final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
-    private final String USER = "system";
-    private final String PASSWORD = "1234";
+    private final String URL = "jdbc:oracle:thin:@localhost:1521:testdb";
+    private final String USER = "scott";
+    private final String PASSWORD = "tiger";
+    
 
 	// DB 연결 메서드
-    private Connection getConnection() {
+    private Connection getConnection() throws SQLException {
         Connection conn = null;
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -53,6 +55,31 @@ public class UserDAO {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public boolean checkId(String custId) {
+        String sql = "SELECT COUNT(*) FROM CUST WHERE CUST_ID = ?";
+        
+        int count = 0; 
+        
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, custId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt(1); 
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // DB 오류 발생 시, 가입 방지를 위해 중복으로 간주
+            return true; 
+        }
+        
+        return (count > 0); 
     }
     
     // 로그인 
@@ -86,9 +113,12 @@ public class UserDAO {
     	
     	    UserDAO dao  =  new UserDAO();    	
     	    Date birth = Date.valueOf("2000-01-01"); 
-         	int result  =dao.join(new UserDTO("k1", "홍길동", birth, "1234"));
+    	    boolean isDuplicate = dao.checkId("k1");
+            System.out.println("아이디 'k1' 중복 여부: " + isDuplicate);
+            
+         	//int result  =dao.join(new UserDTO("k1", "홍길동", birth, "1234"));
          	
-         	System.out.println(result);
+         	//System.out.println(result);
 		
 	}
 }

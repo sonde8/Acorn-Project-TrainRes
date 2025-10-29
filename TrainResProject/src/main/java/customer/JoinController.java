@@ -20,6 +20,8 @@ public class JoinController extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.getRequestDispatcher("/WEB-INF/views/customer/join.jsp").forward(req, resp);
+		
+		
 	}
 	
 	
@@ -29,9 +31,14 @@ public class JoinController extends HttpServlet{
 		req.setCharacterEncoding("UTF-8");
 		
 		String custId =req.getParameter("cust_id");
-		String name = req.getParameter("name");
-		String birthStr = req.getParameter("birth");
+		String name = req.getParameter("name");		
 		String password = req.getParameter("password");
+		
+		String yyyy = req.getParameter("yyyy");		
+		String mm = req.getParameter("mm");		
+		String dd = req.getParameter("dd");
+		
+		String birthStr  = yyyy+"-"+mm+ "-"+dd;
 		
 		
 		System.out.println(custId);
@@ -39,6 +46,7 @@ public class JoinController extends HttpServlet{
 		System.out.println(birthStr);
 		System.out.println(password);
 		
+		//"2008-09-10"   -> 날자 UserDTO 생일을 Date 으로 변환하고 있음
 		
 		Date birthDate = null;
 		try {
