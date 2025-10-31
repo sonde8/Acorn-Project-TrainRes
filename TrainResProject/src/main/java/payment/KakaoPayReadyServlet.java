@@ -27,7 +27,6 @@ public class KakaoPayReadyServlet extends HttpServlet {
         HttpSession session = req.getSession();
 
         UserDTO user = (UserDTO) session.getAttribute("cust");
-//        Customer cust = (Customer) session.getAttribute("cust");
         String custId = (user != null && user.getCustId() != null)
                 ? user.getCustId()
                 : "GUEST";

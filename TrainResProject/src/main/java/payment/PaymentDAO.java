@@ -6,21 +6,21 @@ import java.util.List;
 
 public class PaymentDAO {
 
-	private final String driver = "oracle.jdbc.driver.OracleDriver";
-    private final String url = "jdbc:oracle:thin:@localhost:1521:xe";
-    private final String user = "system";
-    private final String pass = "1234";
+	private final String DRIVER = "oracle.jdbc.driver.OracleDriver";
+    private final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
+    private final String USER = "system";
+    private final String PASSWORD = "1234";
 
     public PaymentDAO() {
         try {
-            Class.forName(driver);
+            Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, user, pass);
+        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
     // 결제/예매 직전 보여줄 단일 운행 정보

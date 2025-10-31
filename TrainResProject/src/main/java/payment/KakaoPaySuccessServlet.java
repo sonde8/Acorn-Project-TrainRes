@@ -59,11 +59,11 @@ public class KakaoPaySuccessServlet extends HttpServlet {
             return;
         }
 
-        try {
-            paymentDAO.insertReservation(order);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+ //      try {
+ //           paymentDAO.insertReservation(order);
+ //       } catch (SQLException e) {
+ //         e.printStackTrace();
+  //      }
 
         try {
             SeatDAO seatDAO = new SeatDAO();
@@ -78,7 +78,7 @@ public class KakaoPaySuccessServlet extends HttpServlet {
             }
 
             if (order.getSeatNo() != null && carNoInt > 0) {
-                boolean ok = seatDAO.reserveSeat(
+                boolean ok = seatDAO.confirmReserveSeatTransactional( // 수정
                         order.getDriveId(),
                         carNoInt,
                         order.getSeatNo(),

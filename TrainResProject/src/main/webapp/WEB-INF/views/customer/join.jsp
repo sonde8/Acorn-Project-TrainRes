@@ -1,495 +1,246 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
 <html lang="ko">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>회원가입</title>
-    
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/joinstyle.css">
-
-   
-
-    <style>
-
-       
-
-        * {
-
-            box-sizing: border-box;
-
-            margin: 0;
-
-            padding: 0;
-
-            font-family: 'Malgun Gothic', 'Dotum', sans-serif;
-
-        }
-
-
-
-        body {
-
-            background-color: #f7f9fc;
-
-            color: #333;
-
-            min-height: 100vh;
-
-        }
-
-
-
-        .login-bar {
-
-            height: 100px;
-
-            background-color: #00458C;
-
-            color: #ffffff;
-
-            text-align: center;
-
-            line-height: 100px;
-
-            font-size: 30px;
-
-            font-weight: bold;
-
-            position: fixed;
-
-            top: 0;
-
-            width: 100%;
-
-            z-index: 10;
-
-        }
-
-
-
-        .login-container {
-
-            width: 100%;
-
-            max-width: 600px;
-
-            margin: 0 auto;
-
-            margin-top: 150px;
-
-            padding: 30px;
-
-            background-color: white;
-
-            border-radius: 8px;
-
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-
-            position: relative;
-
-            z-index: 5;
-
-            margin-bottom: 50px;
-
-        }
-
-
-
-        .tabs {
-
-            width: 100%;
-
-            display: flex;
-
-            justify-content: space-between;
-
-            margin-bottom: 30px;
-
-        }
-
-
-
-        .tabs div {
-
-            flex-grow: 1;
-
-            text-align: center;
-
-            padding: 10px 0;
-
-            font-size: 14px;
-
-            font-weight: bold;
-
-            color: #666;
-
-            border-bottom: 3px solid #e0e0e0;
-
-            cursor: pointer;
-
-            transition: color 0.2s, border-bottom-color 0.2s;
-
-        }
-
-
-
-        .tabs div.active {
-
-            color: #00458C;
-
-            border-bottom: 3px solid #00458C;
-
-        }
-
-       
-
-        .step-content {
-
-            padding: 10px 0;
-
-            display: none;
-
-        }
-
-
-
-        .step-content.active {
-
-            display: block;
-
-        }
-
-
-
-        .form-group {
-
-            display: flex;
-
-            align-items: center;
-
-            margin-bottom: 20px;
-
-        }
-
-
-
-        .form-group label {
-
-            width: 120px;
-
-            flex-shrink: 0;
-
-            font-weight: bold;
-
-            font-size: 15px;
-
-            color: #333;
-
-            padding-right: 15px;
-
-        }
-
-
-
-        .input-wrap {
-
-            flex-grow: 1;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 8px;
-
-            position: relative;
-
-        }
-
-
-
-        .input-field {
-
-            width: 100%;
-
-            padding: 12px 15px;
-
-            font-size: 15px;
-
-            border: 1px solid #e0e0e0;
-
-            border-radius: 3px;
-
-            background-color: #f7f9fb;
-
-            transition: border-color 0.2s, background-color 0.2s;
-
-            height: 45px;
-
-        }
-
-       
-
-        .input-field:focus {
-
-            border-color: #007bff;
-
-            background-color: white;
-
-            outline: none;
-
-        }
-
-
-
-        .check-button {
-
-            background-color: #e0e0e0;
-
-            color: #333;
-
-            border: none;
-
-            padding: 0 15px;
-
-            font-size: 14px;
-
-            height: 45px;
-
-            border-radius: 3px;
-
-            cursor: pointer;
-
-            flex-shrink: 0;
-
-            transition: background-color 0.2s;
-
-        }
-
-
-
-        .check-button:hover {
-
-            background-color: #d0d0d0;
-
-        }
-
-
-
-        .input-info {
-
-            position: absolute;
-
-            bottom: -18px;
-
-            left: 0;
-
-            font-size: 12px;
-
-            color: #999;
-
-        }
-
-
-
-        .input-wrap select {
-
-            padding: 12px 10px;
-
-            border: 1px solid #e0e0e0;
-
-            border-radius: 3px;
-
-            background-color: #f7f9fb;
-
-            font-size: 15px;
-
-            height: 45px;
-
-            flex-grow: 1;
-
-            -webkit-appearance: none;
-
-            -moz-appearance: none;
-
-            appearance: none;
-
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="%23666" d="M8 11.5l-4-4h8l-4 4z"/></svg>');
-
-            background-repeat: no-repeat;
-
-            background-position: right 10px center;
-
-            cursor: pointer;
-
-        }
-
-
-
-        .submit-button {
-
-            width: 100%;
-
-            padding: 15px;
-
-            margin-top: 30px;
-
-            font-size: 18px;
-
-            font-weight: bold;
-
-            color: white;
-
-            background-color: #007bff;
-
-            border: none;
-
-            border-radius: 3px;
-
-            cursor: pointer;
-
-            transition: background-color 0.2s;
-
-        }
-
-
-
-        .submit-button:hover {
-
-            background-color: #0056b3;
-
-        }
-
-
-
-        .terms-placeholder {
-
-            padding: 20px;
-
-            border: 1px solid #e0e0e0;
-
-            border-radius: 5px;
-
-            background-color: #fcfcfc;
-
-            text-align: center;
-
-            font-size: 16px;
-
-            color: #666;
-
-            line-height: 1.5;
-
-            margin-bottom: 20px;
-
-        }
-
-       
-
-        .home-button {
-
-            width: 100%;
-
-            padding: 15px;
-
-            margin-top: 30px;
-
-            font-size: 18px;
-
-            font-weight: bold;
-
-            color: white;
-
-            background-color: #00458C;
-
-            border: none;
-
-            border-radius: 3px;
-
-            cursor: pointer;
-
-            transition: background-color 0.2s;
-
-            text-decoration: none;
-
-            display: block;
-
-            text-align: center;
-
-        }
-
-       
-
-        .home-button:hover {
-
-            background-color: #003366;
-
-        }
-
-
-
-
-
-        @media (max-width: 650px) {
-
-            .login-container {
-
-                margin-top: 100px;
-
-                padding: 20px;
-
-                max-width: 95%;
-
-            }
-
-
-
-            .form-group {
-
-                flex-direction: column;
-
-                align-items: flex-start;
-
-            }
-
-
-
-            .form-group label {
-
-                width: 100%;
-
-                margin-bottom: 5px;
-
-                padding-right: 0;
-
-            }
-
-
-
-            .input-wrap {
-
-                width: 100%;
-
-            }
-
-
-
-            .check-button {
-
-                padding: 0 10px;
-
-            }
-
-        }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회원가입</title>
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/css/joinstyle.css">
+
+<style>
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family: 'Malgun Gothic', 'Dotum', sans-serif;
+}
+
+body {
+	background-color: #f7f9fc;
+	color: #333;
+	min-height: 100vh;
+}
+
+.login-bar {
+	height: 100px;
+	background-color: #00458C;
+	color: #ffffff;
+	text-align: center;
+	line-height: 100px;
+	font-size: 30px;
+	font-weight: bold;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 10;
+}
+
+.login-container {
+	width: 100%;
+	max-width: 600px;
+	margin: 0 auto;
+	margin-top: 150px;
+	padding: 30px;
+	background-color: white;
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	position: relative;
+	z-index: 5;
+	margin-bottom: 50px;
+}
+
+.tabs {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 30px;
+}
+
+.tabs div {
+	flex-grow: 1;
+	text-align: center;
+	padding: 10px 0;
+	font-size: 14px;
+	font-weight: bold;
+	color: #666;
+	border-bottom: 3px solid #e0e0e0;
+	cursor: pointer;
+	transition: color 0.2s, border-bottom-color 0.2s;
+}
+
+.tabs div.active {
+	color: #00458C;
+	border-bottom: 3px solid #00458C;
+}
+
+.step-content {
+	padding: 10px 0;
+	display: none;
+}
+
+.step-content.active {
+	display: block;
+}
+
+.form-group {
+	display: flex;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.form-group label {
+	width: 120px;
+	flex-shrink: 0;
+	font-weight: bold;
+	font-size: 15px;
+	color: #333;
+	padding-right: 15px;
+}
+
+.input-wrap {
+	flex-grow: 1;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	position: relative;
+}
+
+.input-field {
+	width: 100%;
+	padding: 12px 15px;
+	font-size: 15px;
+	border: 1px solid #e0e0e0;
+	border-radius: 3px;
+	background-color: #f7f9fb;
+	transition: border-color 0.2s, background-color 0.2s;
+	height: 45px;
+}
+
+.input-field:focus {
+	border-color: #007bff;
+	background-color: white;
+	outline: none;
+}
+
+.check-button {
+	background-color: #e0e0e0;
+	color: #333;
+	border: none;
+	padding: 0 15px;
+	font-size: 14px;
+	height: 45px;
+	border-radius: 3px;
+	cursor: pointer;
+	flex-shrink: 0;
+	transition: background-color 0.2s;
+}
+
+.check-button:hover {
+	background-color: #d0d0d0;
+}
+
+.input-info {
+	position: absolute;
+	bottom: -18px;
+	left: 0;
+	font-size: 12px;
+	color: #999;
+}
+
+.input-wrap select {
+	padding: 12px 10px;
+	border: 1px solid #e0e0e0;
+	border-radius: 3px;
+	background-color: #f7f9fb;
+	font-size: 15px;
+	height: 45px;
+	flex-grow: 1;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	background-image:
+		url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="%23666" d="M8 11.5l-4-4h8l-4 4z"/></svg>');
+	background-repeat: no-repeat;
+	background-position: right 10px center;
+	cursor: pointer;
+}
+
+.submit-button {
+	width: 100%;
+	padding: 15px;
+	margin-top: 30px;
+	font-size: 18px;
+	font-weight: bold;
+	color: white;
+	background-color: #007bff;
+	border: none;
+	border-radius: 3px;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+	background-color: #0056b3;
+}
+
+.terms-placeholder {
+	padding: 20px;
+	border: 1px solid #e0e0e0;
+	border-radius: 5px;
+	background-color: #fcfcfc;
+	text-align: center;
+	font-size: 16px;
+	color: #666;
+	line-height: 1.5;
+	margin-bottom: 20px;
+}
+
+.home-button {
+	width: 100%;
+	padding: 15px;
+	margin-top: 30px;
+	font-size: 18px;
+	font-weight: bold;
+	color: white;
+	background-color: #00458C;
+	border: none;
+	border-radius: 3px;
+	cursor: pointer;
+	transition: background-color 0.2s;
+	text-decoration: none;
+	display: block;
+	text-align: center;
+}
+
+.home-button:hover {
+	background-color: #003366;
+}
+
+@media ( max-width : 650px) {
+	.login-container {
+		margin-top: 100px;
+		padding: 20px;
+		max-width: 95%;
+	}
+	.form-group {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.form-group label {
+		width: 100%;
+		margin-bottom: 5px;
+		padding-right: 0;
+	}
+	.input-wrap {
+		width: 100%;
+	}
+	.check-button {
+		padding: 0 10px;
+	}
+}
+</style>
 
 </head>
 
@@ -497,212 +248,100 @@
 
 
 
-    <div class="login-bar">
-
-        회원가입
-
-    </div>
-
-
-
-    <div class="login-container">
-
-       
-
-       
-
-        <div class="tabs" id="signup-tabs">
-
-            <div id="tab-1" class="active">본인인증</div>
-
-            <div id="tab-2">약관동의</div>
-
-            <div id="tab-3">정보입력</div>
-
-            <div id="tab-4">가입완료</div>
-
-        </div>
-
-
-
-       
-
-        <div class="step-content active" id="step-1">
-
-            <form    name="frm" class="login-form" action="<%=request.getContextPath()%>/join"    method="post">
-
-
-
-             
-
-                <div class="form-group">
-
-                    <label for="user-id">아이디</label>
-
-                    <div class="input-wrap">
-
-                        <input type="text" id="user-id" name="cust_id" placeholder="영문, 숫자 4자 이상" class="input-field" required>
-                        
-
-						<button type="button" class="check-button" id="idCheckButton" onclick="checkIdDuplicate()">중복확인</button>
-
-                        <span class="input-info">사용 가능 여부를 확인해 주세요.</span>
-
-                    </div>
-
-                </div>
-
-               
-
-             
-
-                <div class="form-group">
-
-                    <label for="user-name">이름</label>
-
-                    <div class="input-wrap">
-
-                        <input type="text" id="user-name" name="name" placeholder="실명을 입력하세요" class="input-field" required>
-
-                    </div>
-
-                </div>
-
-
-
-             
-
-                <div class="form-group">
-
-                    <label for="password">비밀번호</label>
-
-                    <div class="input-wrap">
-
-                        <input type="password" id="password" name="password"placeholder="영문, 숫자, 특수문자 포함 8자 이상" class="input-field" required>
-
-                        <span class="input-info">보안을 위해 강력한 비밀번호를 사용하세요.</span>
-
-                    </div>
-
-                </div>
-
-               
-
-               
-
-                <div class="form-group">
-
-                    <label for="password-confirm">비밀번호 확인</label>
-
-                    <div class="input-wrap">
-
-                        <input type="password" id="password-confirm" name="password" placeholder="비밀번호를 다시 한 번 입력하세요" class="input-field" required>
-
-                    </div>
-
-                </div>
-
-               
-
-               
-
-                <div class="form-group">
-
-                    <label>생년월일</label>
-
-                    <div class="input-wrap">
-
-                        <select id="birth-year"  name="yyyy">
-                        
-
-                            <option value=""  >년도</option>
-
-                        </select>
-
-                        <select id="birth-month" name="mm">
-
-                            <option value="">월</option>
-
-                        </select>
-
-                        <input type="text" id="birth-day" name="dd" placeholder="일 (예: 01)" maxlength="2" class="input-field" required style="max-width: 120px;">
-
-                    </div>
-
-                </div>
-
-               
-
-               
-
-                <button type="button" class="submit-button" onclick="goToNextStep(2)">다음 단계로 이동</button>
-            </form>
-
-        </div>
-
-
-
-       
-
-        <div class="step-content" id="step-2">
-
-            <div class="terms-placeholder">
-
-                <h2>약관동의</h2>
-
-                <p>여기에 서비스 이용약관 및 개인정보 수집/이용 동의에 대한 내용이 표시됩니다.</p>
-
-                <p>동의 체크박스를 추가하고, 다음 단계(정보입력)로 넘어갈 버튼이 필요합니다.</p>
-
-            </div>
-
-            <button type="button" class="submit-button" onclick="goToNextStep(3)" style="background-color: #28a745;">약관에 동의하고 다음 단계로</button>
-
-        </div>
-
-
-
-       
-
-        <div class="step-content" id="step-3">
-
-            <div class="terms-placeholder">
-
-                <h2>추가 정보 입력</h2>
-
-                <p>여기에 주소, 이메일 등 추가적인 회원 정보 입력 필드가 표시됩니다.</p>
-
-            </div>
-
-             <button type="button" class="submit-button" onclick="goToNextStep(4)">정보 입력 완료</button>
-
-        </div>
-
-       
-
-       
-
-        <div class="step-content" id="step-4">
-
-            <div class="terms-placeholder" style="border-color: #28a745;">
-
-                <h2>🎉 회원가입이 완료되었습니다!</h2>
-
-                <p>서비스를 이용해 주셔서 감사합니다.</p>
-
-            </div>
-
-         
-
-            <a href="#" class="home-button">홈으로 이동</a>
-
-        </div>
-
-
-
-    </div>
-
-<script>
+	<div class="login-bar">회원가입</div>
+	<div class="login-container">
+		<div class="tabs" id="signup-tabs">
+			<div id="tab-1" class="active">본인인증</div>
+			<div id="tab-2">약관동의</div>
+			<div id="tab-3">정보입력</div>
+			<div id="tab-4">가입완료</div>
+		</div>
+
+		<div class="step-content active" id="step-1">
+			<form name="frm" class="login-form"
+				action="<%=request.getContextPath()%>/join" method="post">
+				<div class="form-group">
+					<label for="user-id">아이디</label>
+					<div class="input-wrap">
+						<input type="text" id="user-id" name="cust_id"
+							placeholder="영문, 숫자 4자 이상" class="input-field" required>
+						<button type="button" class="check-button" id="idCheckButton"
+							onclick="checkIdDuplicate()">중복확인</button>
+						<span class="input-info">사용 가능 여부를 확인해 주세요.</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="user-name">이름</label>
+					<div class="input-wrap">
+						<input type="text" id="user-name" name="name"
+							placeholder="실명을 입력하세요" class="input-field" required>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="password">비밀번호</label>
+					<div class="input-wrap">
+						<input type="password" id="password" name="password"
+							placeholder="영문, 숫자, 특수문자 포함 8자 이상" class="input-field" required>
+						<span class="input-info">보안을 위해 강력한 비밀번호를 사용하세요.</span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="password-confirm">비밀번호 확인</label>
+					<div class="input-wrap">
+						<input type="password" id="password-confirm" name="password"
+							placeholder="비밀번호를 다시 한 번 입력하세요" class="input-field" required>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label>생년월일</label>
+					<div class="input-wrap">
+						<select id="birth-year" name="yyyy">
+							<option value="">년도</option>
+						</select> <select id="birth-month" name="mm">
+							<option value="">월</option>
+						</select> <input type="text" id="birth-day" name="dd"
+							placeholder="일 (예: 01)" maxlength="2" class="input-field"
+							required style="max-width: 120px;">
+					</div>
+				</div>
+
+				<button type="button" class="submit-button"
+					onclick="goToNextStep(2)">다음 단계로 이동</button>
+			</form>
+		</div>
+
+		<div class="step-content" id="step-2">
+			<div class="terms-placeholder">
+				<h2>약관동의</h2>
+				<p>여기에 서비스 이용약관 및 개인정보 수집/이용 동의에 대한 내용이 표시됩니다.</p>
+				<p>동의 체크박스를 추가하고, 다음 단계(정보입력)로 넘어갈 버튼이 필요합니다.</p>
+			</div>
+			<button type="button" class="submit-button" onclick="goToNextStep(3)"
+				style="background-color: #28a745;">약관에 동의하고 다음 단계로</button>
+		</div>
+
+		<div class="step-content" id="step-3">
+			<div class="terms-placeholder">
+				<h2>추가 정보 입력</h2>
+				<p>여기에 주소, 이메일 등 추가적인 회원 정보 입력 필드가 표시됩니다.</p>
+			</div>
+			<button type="button" class="submit-button" onclick="goToNextStep(4)">정보
+				입력 완료</button>
+		</div>
+
+		<div class="step-content" id="step-4">
+			<div class="terms-placeholder" style="border-color: #28a745;">
+				<h2>🎉 회원가입이 완료되었습니다!</h2>
+				<p>서비스를 이용해 주셔서 감사합니다.</p>
+			</div>
+			<a href="#" class="home-button">홈으로 이동</a>
+		</div>
+	</div>
+
+	<script>
     // 현재 단계를 관리하는 전역 변수 (기존 코드 유지)
     let currentStep = 1;
     // ⭐⭐⭐ [추가] 중복 확인 상태를 관리하는 전역 변수 ⭐⭐⭐

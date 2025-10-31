@@ -31,9 +31,7 @@ public class CustomerMyPageServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = req.getSession(false);
-        // UserDTO user = (UserDTO) session.getAttribute("cust");
         UserDTO user = (session != null) ? (UserDTO) session.getAttribute("cust") : null;
-        
 
         if (user == null) {
             resp.sendRedirect(req.getContextPath() + "/login");
@@ -47,31 +45,42 @@ public class CustomerMyPageServlet extends HttpServlet {
             case "/mypage": {
                 Customer fresh = cdao.findById(user.getCustId());
                 List<Reservation> reservations = rdao.findByCustomerId(user.getCustId());
-
                 req.setAttribute("customer", fresh);
                 req.setAttribute("reservations", reservations);
-
                 view = "/WEB-INF/views/mypage/mypage.jsp";
                 break;
             }
-
             case "/mypage/resdetail": {
-                int resId = Integer.parseInt(req.getParameter("resId"));
+                String resIdStr = req.getParameter("resId");
+                if (resIdStr == null || resIdStr.isBlank()) {
+                    req.setAttribute("error", "잘못된 접근입니다. 예약번호가 없습니다.");
+                    view = "/WEB-INF/views/mypage/mypage.jsp";
+                    break;
+                }
+                int resId;
+                try {
+                    resId = Integer.parseInt(resIdStr);
+                } catch (NumberFormatException e) {
+                    req.setAttribute("error", "예약번호 형식이 올바르지 않습니다.");
+                    view = "/WEB-INF/views/mypage/mypage.jsp";
+                    break;
+                }
                 Reservation resInfo = rdao.findByResId(resId);
-
+                if (resInfo == null) {
+                    req.setAttribute("error", "해당 예약을 찾을 수 없습니다.");
+                    view = "/WEB-INF/views/mypage/mypage.jsp";
+                    break;
+                }
                 req.setAttribute("reservation", resInfo);
-
                 view = "/WEB-INF/views/mypage/mypage_detail.jsp";
                 break;
             }
-
             case "/mypage/payments": {
                 List<PaymentView> payments = pdao.findByCustomerId(user.getCustId());
                 req.setAttribute("payments", payments);
                 view = "/WEB-INF/views/mypage/mypage_payments.jsp";
                 break;
             }
-
             case "/mypage/edit": {
                 Customer fresh = cdao.findById(user.getCustId());
                 req.setAttribute("customer", fresh);

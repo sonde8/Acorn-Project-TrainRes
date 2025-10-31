@@ -32,6 +32,7 @@ public class DriveInfoServlet extends HttpServlet {
     private void handleInitialRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
+    	// 파라미터 획득 (검색 폼에서 넘어온 조건)
         String deptStation = req.getParameter("deptName");
         String arriStation = req.getParameter("arriName");
         String startTimeFilter = req.getParameter("startTime");
@@ -44,6 +45,7 @@ public class DriveInfoServlet extends HttpServlet {
             return;
         }
 
+        // 서비스 호출
         DriveInfoService service = new DriveInfoService();
         List<DriveInfoResultDTO> list =
                 service.getDriveInfosByRoutePaging(

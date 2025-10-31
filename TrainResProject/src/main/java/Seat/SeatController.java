@@ -35,7 +35,22 @@ public class SeatController extends HttpServlet {
 
         // ✅ ① returnUrl 있으면 세션에 저장
         HttpSession session = req.getSession();
+        String already = (String) session.getAttribute("lastSeatPage");
         String returnUrl = req.getParameter("returnUrl");
+        String referer = req.getHeader("Referer");
+        
+        if(already == null || already.isEmpty()) {
+            // 1) returnUrl 우선 (단, /seat가 아니어야 함)
+            if (returnUrl != null && !returnUrl.isEmpty() && !returnUrl.contains("/seat")) {
+                session.setAttribute("lastSeatPage", returnUrl);
+            }
+            // 2) 없으면 Referer 사용 (단, /seat가 아니어야 함)
+            else if (referer != null && !referer.isEmpty() && !referer.contains("/seat")) {
+                session.setAttribute("lastSeatPage", referer);
+            }
+            // 3) 그래도 없으면 굳이 세팅하지 않음 (doPost에서 안전 fallback)
+        }
+ /*       String returnUrl = req.getParameter("returnUrl");
         if (returnUrl != null && !returnUrl.isEmpty()) {
             session.setAttribute("lastSeatPage", returnUrl);
         } else {
@@ -44,7 +59,7 @@ public class SeatController extends HttpServlet {
             if (referer != null) {
                 session.setAttribute("lastSeatPage", referer);
             }
-        }
+        }*/
 
         req.getRequestDispatcher("/WEB-INF/views/seat/seat.jsp").forward(req, resp);
     }
@@ -73,19 +88,27 @@ public class SeatController extends HttpServlet {
         if (lastPage != null && !lastPage.isEmpty()) {
             session.removeAttribute("lastSeatPage");
             resp.sendRedirect(lastPage);
-        } else {
+            return;
+        } 
+        
+        //else {
             // 예외적으로 세션에 검색정보가 없을 경우만 기본페이지로
             String dept = (String) session.getAttribute("searchDept");
             String arri = (String) session.getAttribute("searchArri");
             String start = (String) session.getAttribute("searchStartTime");
 
             String ctx = req.getContextPath();
-            String qs = String.format("?deptName=%s&arriName=%s&startTime=%s",
+            
+            if(dept != null && arri != null && start != null) {
+               String qs = String.format("?deptName=%s&arriName=%s&startTime=%s",
                     URLEncoder.encode(dept == null ? "" : dept, StandardCharsets.UTF_8),
                     URLEncoder.encode(arri == null ? "" : arri, StandardCharsets.UTF_8),
                     URLEncoder.encode(start == null ? "" : start, StandardCharsets.UTF_8));
 
             resp.sendRedirect(ctx + "/DriveInfoList" + qs);
+        } else {
+           resp.sendRedirect(ctx + "/DriveInfoList");
         }
     }
+   
 }
