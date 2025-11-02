@@ -1,6 +1,3 @@
-<img width="1397" height="778" alt="스크린샷 2025-11-02 오후 7 01 50" src="https://github.com/user-attachments/assets/6962e794-e92a-472f-8969-a57cad79f2a9" />![main](https://github.com/jinsuzzing/AllInOne/assets/80892395/23864c03-138d-4a33-848b-c44d0541224f)
-
-
 ## 에이콘레일 서비스
 - 서비스명 : AcornRail
 - 서비스설명 : 기차 예매 서비스
@@ -44,12 +41,6 @@
         <td>
             <img src="https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=Oracle&logoColor=white"/>
             <img src="https://img.shields.io/badge/Apache%20Tomcat-F8DC75?style=for-the-badge&logo=Apache%20Tomcat&logoColor=black"/>
-        </td>
-    </tr>
-    <tr>
-        <td>개발도구</td>
-        <td>
-            <img src="https://img.shields.io/badge/Visual_Studio_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white"/>
         </td>
     </tr>
 </table>
@@ -120,6 +111,10 @@
 <img width="1387" height="780" alt="스크린샷 2025-11-02 오후 7 02 04" src="https://github.com/user-attachments/assets/3b106f89-d78b-4daf-8cef-866c9ea10337" />
 <img width="1396" height="784" alt="스크린샷 2025-11-02 오후 7 02 12" src="https://github.com/user-attachments/assets/bcf0662b-cdce-4631-b537-2ce736465647" />
 <img width="1394" height="780" alt="스크린샷 2025-11-02 오후 7 02 18" src="https://github.com/user-attachments/assets/ec3888a1-4bca-40e5-bf95-7119d69d77c9" />
+
+- 나의 기본정보를 DB에서 불러와 화면에 출력합니다.
+- DB에서 데이터를 불러와 예약 내역을 확인할 수 있습니다.
+- 비밀번호 수정이 가능합니다
 
 
 
