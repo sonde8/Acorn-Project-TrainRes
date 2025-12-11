@@ -58,7 +58,7 @@
 ### 유저 플로우
 <img width="1457" height="719" alt="스크린샷 2025-11-02 오후 6 59 32" src="https://github.com/user-attachments/assets/6d8b16ba-e7e3-43e5-9eeb-ec565e302724" />
 
-###ERD
+### ERD
 <img width="1264" height="732" alt="유승재 ERD" src="https://github.com/user-attachments/assets/42d1bb23-d8b0-47a0-98c1-2cf0cba46da9" />
 
 <br>
